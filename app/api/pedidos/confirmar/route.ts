@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
-import { generarReciboPDF, generarPedidoId, ReciboData } from '@/lib/recibo-pdf'
-import { sendReciboWhatsApp, generarMensajeConfirmacion, generateWhatsAppLink } from '@/lib/whatsapp-service'
+import { generateWhatsAppLink, generarMensajeConfirmacion } from '@/lib/whatsapp-service'
 import { getFarmaciaById } from '@/lib/supabase-helpers'
 
 export interface ConfirmarPedidoRequest {
@@ -23,6 +22,13 @@ export interface ConfirmarPedidoRequest {
   // Pago
   metodoPago: string
   total: number
+}
+
+// Generar ID único para el pedido
+function generarPedidoId(): string {
+  const timestamp = Date.now().toString(36).toUpperCase()
+  const random = Math.random().toString(36).substring(2, 6).toUpperCase()
+  return `FF-${timestamp}-${random}`
 }
 
 export async function POST(request: Request) {
@@ -56,36 +62,6 @@ export async function POST(request: Request) {
     // Generar ID del pedido
     const pedidoId = generarPedidoId()
     
-    // Preparar datos del recibo
-    const reciboData: ReciboData = {
-      pedidoId,
-      fecha: new Date(),
-      
-      clienteNombre: body.clienteNombre,
-      clienteTelefono: body.clienteTelefono,
-      clienteDireccion: body.clienteDireccion,
-      
-      farmaciaNombre: farmacia.nombre,
-      farmaciaTelefono: farmacia.telefono,
-      farmaciaDireccion: farmacia.direccion,
-      
-      productos: body.productos.map(p => ({
-        nombre: p.nombre,
-        cantidad: p.cantidad,
-        precioUnitario: p.precio,
-        subtotal: p.cantidad * p.precio,
-      })),
-      
-      subtotal: body.total,
-      envio: 0, // Gratis por ahora
-      total: body.total,
-      
-      metodoPago: body.metodoPago,
-    }
-    
-    // Generar PDF (como base64 data URI)
-    const pdfBase64 = generarReciboPDF(reciboData)
-    
     // Generar mensaje de confirmación
     const mensajeCliente = generarMensajeConfirmacion({
       nombreCliente: body.clienteNombre,
@@ -98,7 +74,7 @@ export async function POST(request: Request) {
       })),
     })
     
-    // Links de WhatsApp (para desarrollo/demo)
+    // Links de WhatsApp
     const whatsappLinkCliente = generateWhatsAppLink(body.clienteTelefono, mensajeCliente)
     
     let whatsappLinkFarmacia = ''
@@ -106,27 +82,6 @@ export async function POST(request: Request) {
       const mensajeFarmacia = `🔔 *Nuevo Pedido #${pedidoId}*\n\nCliente: ${body.clienteNombre}\nTeléfono: ${body.clienteTelefono}\nTotal: ${body.total.toFixed(2)}€\n\nProductos:\n${body.productos.map(p => `• ${p.cantidad}x ${p.nombre}`).join('\n')}`
       whatsappLinkFarmacia = generateWhatsAppLink(farmacia.telefono, mensajeFarmacia)
     }
-    
-    // En producción, enviar mensajes automáticamente
-    // await sendReciboWhatsApp({
-    //   telefono: body.clienteTelefono,
-    //   nombreDestinatario: body.clienteNombre,
-    //   pedidoId,
-    //   total: body.total,
-    //   farmaciaNombre: farmacia.nombre,
-    //   tipo: 'cliente',
-    // })
-    //
-    // if (farmacia.telefono) {
-    //   await sendReciboWhatsApp({
-    //     telefono: farmacia.telefono,
-    //     nombreDestinatario: body.clienteNombre,
-    //     pedidoId,
-    //     total: body.total,
-    //     farmaciaNombre: farmacia.nombre,
-    //     tipo: 'farmacia',
-    //   })
-    // }
     
     return NextResponse.json({
       success: true,
@@ -136,10 +91,18 @@ export async function POST(request: Request) {
         total: body.total,
         estado: 'confirmado',
       },
-      recibo: {
-        pdf: pdfBase64, // Base64 del PDF para descarga
-        mensaje: mensajeCliente,
+      farmacia: {
+        nombre: farmacia.nombre,
+        telefono: farmacia.telefono,
+        direccion: farmacia.direccion,
       },
+      cliente: {
+        nombre: body.clienteNombre,
+        telefono: body.clienteTelefono,
+        direccion: body.clienteDireccion,
+      },
+      productos: body.productos,
+      metodoPago: body.metodoPago,
       whatsapp: {
         cliente: whatsappLinkCliente,
         farmacia: whatsappLinkFarmacia,
@@ -154,4 +117,3 @@ export async function POST(request: Request) {
     )
   }
 }
-

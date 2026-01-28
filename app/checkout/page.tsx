@@ -31,6 +31,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { MetodoPago, Farmacia } from "@/lib/supabase-helpers";
+import { generarReciboPDF, ReciboData } from "@/lib/recibo-pdf";
 
 // Iconos para cada método de pago
 const PAYMENT_ICONS: Record<MetodoPago, React.ReactNode> = {
@@ -255,12 +256,36 @@ export default function CheckoutPage() {
         throw new Error(data.error || 'Error al procesar el pedido');
       }
 
+      // Generar PDF en el cliente (navegador)
+      const reciboData: ReciboData = {
+        pedidoId: data.pedido.id,
+        fecha: new Date(),
+        clienteNombre: billingData.nombre,
+        clienteTelefono: billingData.telefono,
+        clienteDireccion: billingData.direccion,
+        farmaciaNombre: data.farmacia.nombre,
+        farmaciaTelefono: data.farmacia.telefono,
+        farmaciaDireccion: data.farmacia.direccion,
+        productos: cart.map(item => ({
+          nombre: item.nombre,
+          cantidad: item.cantidad,
+          precioUnitario: item.precio,
+          subtotal: item.cantidad * item.precio,
+        })),
+        subtotal: total,
+        envio: 0,
+        total: total,
+        metodoPago: PAYMENT_LABELS[paymentMethod].title,
+      };
+
+      const pdfBase64 = generarReciboPDF(reciboData);
+
       // Guardar datos del pedido confirmado
       setPedidoConfirmado({
         id: data.pedido.id,
         fecha: data.pedido.fecha,
         total: data.pedido.total,
-        pdfBase64: data.recibo.pdf,
+        pdfBase64: pdfBase64,
         whatsappCliente: data.whatsapp.cliente,
         whatsappFarmacia: data.whatsapp.farmacia,
       });

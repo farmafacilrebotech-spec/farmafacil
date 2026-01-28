@@ -61,10 +61,12 @@ export function useCart() {
 
   const setFarmaciaAsignada = (farmacia: FarmaciaAsignada) => {
     setFarmaciaLib(farmacia);
+    setFarmaciaAsignadaState(farmacia); // Actualizar estado local inmediatamente
   };
 
   const clearFarmaciaAsignada = () => {
     clearFarmaciaLib();
+    setFarmaciaAsignadaState(null); // Actualizar estado local inmediatamente
   };
 
   return {
