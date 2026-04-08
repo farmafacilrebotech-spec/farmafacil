@@ -1,40 +1,55 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { createServerClient } from "@supabase/ssr";
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+export async function middleware(req: NextRequest) {
+  const res = NextResponse.next();
+  const path = req.nextUrl.pathname;
 
-  // Obtener sesiones desde cookies (si existen)
-  // Nota: localStorage no está disponible en middleware, 
-  // por lo que verificamos las rutas protegidas en el lado del cliente
-  
-  // Solo aplicamos middleware a rutas específicas
-  const isFarmaciaRoute = pathname.startsWith('/farmacia/');
-  const isClienteRoute = pathname.startsWith('/cliente/');
+  // Solo protegemos /admin (por ahora)
+  if (!path.startsWith("/admin")) return res;
 
-  // Para rutas de farmacia y cliente, permitimos el acceso
-  // La verificación real de sesión se hace en cada página con useEffect
-  // porque localStorage solo está disponible en el cliente
-  
-  if (isFarmaciaRoute || isClienteRoute) {
-    // Permitir acceso - la verificación se hace en el componente
-    return NextResponse.next();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll: () => req.cookies.getAll(),
+        setAll: (cookies) => {
+          cookies.forEach(({ name, value, options }) =>
+            res.cookies.set(name, value, options)
+          );
+        },
+      },
+    }
+  );
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // Si no hay sesión, fuera
+  if (!user) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/login";
+    url.searchParams.set("next", path);
+    return NextResponse.redirect(url);
   }
 
-  return NextResponse.next();
+  // Leer rol
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (!profile || profile.role !== "admin") {
+    const url = req.nextUrl.clone();
+    url.pathname = "/";
+    return NextResponse.redirect(url);
+  }
+
+  return res;
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     */
-    '/((?!api|_next/static|_next/image|favicon.ico|images|demo|public).*)',
-  ],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
-

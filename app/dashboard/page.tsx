@@ -78,6 +78,16 @@ export default function DashboardPage() {
               </Card>
             </Link>
           </div>
+          
+          {/* Acceso como Administrador */}
+          <div className="mt-4 flex justify-end">
+            <Link
+                  href="/admin"
+                  className="text-xs text-[#1ABBB3] hover:underline font-semibold"
+              >
+                Acceder como Administrador
+              </Link>
+            </div>
 
           {/* Info adicional */}
           <div className="mt-12 text-center">

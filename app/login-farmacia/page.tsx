@@ -90,7 +90,7 @@ export default function LoginFarmaciaPage() {
         <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
                 <img 
-                  src="https://zvxxdmfljbtlenjatqgm.supabase.co/storage/v1/object/public/farmacias-logos/Farmafacil.png"
+                  src="/logo_farmafacil.png"
                   alt="Logo FarmaFácil"
                   className="w-20 h-20 object-contain"
                 />

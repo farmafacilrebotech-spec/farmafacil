@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Pill, Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import FooterLogo from "@/components/common/FooterLogo";
 
 export default function Footer() {
   return (
@@ -7,14 +8,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-               <div className="flex justify-center mb-4">
-                <img 
-                  src="https://zvxxdmfljbtlenjatqgm.supabase.co/storage/v1/object/public/farmacias-logos/Farmafacil.png"
-                  alt="Logo FarmaFácil"
-                  className="w-20 h-20 object-contain"
-                />
-               </div>
+            <div className="mb-4 flex flex-wrap items-center gap-3">
+              <FooterLogo />
               <span className="text-xl font-bold">FarmaFácil</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -44,10 +39,26 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/demo"
+                  className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
+                >
+                  Demo
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/contacto"
                   className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
                 >
                   Contacto
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/#solicitar-demo"
+                  className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
+                >
+                  Solicitar demo
                 </Link>
               </li>
               <li>

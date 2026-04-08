@@ -1,15 +1,31 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 import Script from "next/script";
 import { Toaster } from '@/components/ui/toaster';
 import { CartProvider } from '@/context/CartContext';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = localFont({
+  src: [
+    {
+      path: '../public/fonts/inter/Inter-Regular.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/inter/Inter-SemiBold.ttf',
+      weight: '600',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-inter',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: 'FarmaFácil - Digitaliza tu Farmacia',
-  description: 'Catálogo conectado, pedidos online y atención automática con IA.',
+  title: 'FarmaFácil — Digitaliza tu farmacia sin complicaciones',
+  description:
+    'Reduce colas, automatiza pedidos y mejora la atención con catálogo por QR, kiosko en tienda y asistente. Solicita demo gratuita.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

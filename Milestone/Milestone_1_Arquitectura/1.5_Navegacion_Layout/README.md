@@ -18,13 +18,19 @@ Configuración del layout principal que envuelve toda la aplicación.
 ### Archivo: `app/layout.tsx`
 ```typescript
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import { Navbar } from '@/components/common/Navbar'
 import { Footer } from '@/components/common/Footer'
 import { Toaster } from '@/components/ui/sonner'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = localFont({
+  src: [
+    { path: '../public/fonts/inter/Inter-Regular.ttf', weight: '400', style: 'normal' },
+    { path: '../public/fonts/inter/Inter-SemiBold.ttf', weight: '600', style: 'normal' },
+  ],
+  variable: '--font-inter',
+})
 
 export const metadata: Metadata = {
   title: 'FarmaFácil - Tu farmacia online',
@@ -55,7 +61,7 @@ export default function RootLayout({
 ```
 
 ### Características
-- Font Inter de Google Fonts
+- Fuente Inter local (`next/font/local`, archivos en `public/fonts/inter/`)
 - Layout flex con min-height: 100vh
 - Navbar fijo en la parte superior
 - Footer en la parte inferior

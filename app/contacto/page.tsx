@@ -14,6 +14,7 @@ export default function ContactoPage() {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     nombre: "",
+    farmacia: "",
     email: "",
     telefono: "",
     tipoUsuario: "",
@@ -36,10 +37,13 @@ export default function ContactoPage() {
     try {
       const payload = {
         nombre: formData.nombre,
+        farmacia: formData.farmacia || "",
         email: formData.email,
         telefono: formData.telefono || "",
         tipoUsuario: formData.tipoUsuario || "",
         mensaje: formData.mensaje,
+        source: "contacto" as const,
+        submittedAt: new Date().toISOString(),
       };
   
       const response = await fetch("/api/contacto", {
@@ -62,6 +66,7 @@ export default function ContactoPage() {
       // Reseteo limpio
       setFormData({
         nombre: "",
+        farmacia: "",
         email: "",
         telefono: "",
         tipoUsuario: "",
@@ -114,6 +119,19 @@ export default function ContactoPage() {
                         setFormData({ ...formData, nombre: e.target.value })
                       }
                       required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-2 block">
+                      Farmacia (si aplica)
+                    </label>
+                    <Input
+                      placeholder="Nombre de la oficina"
+                      value={formData.farmacia}
+                      onChange={(e) =>
+                        setFormData({ ...formData, farmacia: e.target.value })
+                      }
                     />
                   </div>
 

@@ -13,17 +13,20 @@ import { supabase } from "@/lib/supabaseClient";
 
 export default function LoginPage() {
   const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // 👇 Toggle discreto para poder entrar como super-admin mientras montamos roles
+  const [adminMode, setAdminMode] = useState(false);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    // Validar que se aceptaron los términos
     if (!acceptedTerms) {
       setError("Debes aceptar los términos y condiciones para continuar");
       return;
@@ -40,20 +43,50 @@ export default function LoginPage() {
       if (signInError) throw signInError;
 
       if (data.user) {
+        // 1) Intentar rol real (si existe tabla profiles)
+        const { data: profile, error: profileErr } = await supabase
+          .from("profiles")
+          .select("role, pharmacy_id")
+          .eq("id", data.user.id)
+          .single();
+
+        // Si existe role, redirige por rol
+        if (!profileErr && profile?.role) {
+          if (profile.role === "admin") {
+            router.push("/admin");
+            return;
+          }
+          if (profile.role === "pharmacy") {
+            router.push("/farmacia/dashboard");
+            return;
+          }
+          // customer (o cualquier otro)
+          router.push("/cliente/dashboard");
+          return;
+        }
+
+        // 2) Si aún no existe profiles, fallback:
+        // Si adminMode está activado, intenta entrar a /admin (luego lo cerraremos con middleware)
+        if (adminMode) {
+          router.push("/admin");
+          return;
+        }
+
+        // Fallback antiguo: mirar si es farmacia por la tabla farmacias
         const { data: farmacia } = await supabase
           .from("farmacias")
-          .select("*")
+          .select("id")
           .eq("user_id", data.user.id)
           .single();
 
         if (farmacia) {
-          router.push("/dashboard");
+          router.push("/farmacia/dashboard");
         } else {
-          router.push("/catalogo");
+          router.push("/cliente/dashboard");
         }
       }
     } catch (err: any) {
-      setError(err.message || "Error al iniciar sesión");
+      setError(err?.message || "Error al iniciar sesión");
     } finally {
       setIsLoading(false);
     }
@@ -72,6 +105,7 @@ export default function LoginPage() {
             Acceder a FarmaFácil
           </CardTitle>
         </CardHeader>
+
         <CardContent>
           <Tabs defaultValue="farmacia" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
@@ -93,6 +127,7 @@ export default function LoginPage() {
                     required
                   />
                 </div>
+
                 <div>
                   <label className="text-sm font-medium text-gray-700 mb-2 block">
                     Contraseña
@@ -106,7 +141,6 @@ export default function LoginPage() {
                   />
                 </div>
 
-                {/* Checkbox de términos y condiciones */}
                 <div className="flex items-start space-x-2">
                   <Checkbox
                     id="terms-farmacia"
@@ -173,6 +207,7 @@ export default function LoginPage() {
                     required
                   />
                 </div>
+
                 <div>
                   <label className="text-sm font-medium text-gray-700 mb-2 block">
                     Contraseña
@@ -186,7 +221,6 @@ export default function LoginPage() {
                   />
                 </div>
 
-                {/* Checkbox de términos y condiciones */}
                 <div className="flex items-start space-x-2">
                   <Checkbox
                     id="terms-cliente"
@@ -239,6 +273,23 @@ export default function LoginPage() {
               </form>
             </TabsContent>
           </Tabs>
+
+          {/* 👇 Acceso super-admin DISCRETO (no tarjeta grande) */}
+          <div className="mt-4 flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() => setAdminMode((v) => !v)}
+              className="text-xs text-gray-500 hover:underline"
+            >
+              Acceso administración
+            </button>
+
+            {adminMode && (
+              <span className="text-xs font-medium text-gray-700">
+                Modo administración activado
+              </span>
+            )}
+          </div>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
