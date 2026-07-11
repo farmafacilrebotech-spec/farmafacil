@@ -15,12 +15,14 @@ interface Message {
 interface ChatAssistantProps {
   farmaciaId: string;
   clienteId?: string;
+  nombreFarmacia?: string;
   onClose?: () => void; // 👈 nueva prop para cerrar
 }
 
 export default function ChatAssistant({
   farmaciaId,
   clienteId,
+  nombreFarmacia,
   onClose,
 }: ChatAssistantProps) {
   const [messages, setMessages] = useState<Message[]>([
@@ -54,15 +56,16 @@ export default function ChatAssistant({
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/assistant/chat", {
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           farmacia_id: farmaciaId,
-          cliente_id: clienteId,
+          cliente_id: clienteId || "CLI001",
           mensaje: input,
+          nombre_farmacia: nombreFarmacia || "tu farmacia",
         }),
       });
 

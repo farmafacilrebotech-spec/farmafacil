@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Menu, X, Pill } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { FARMAFACIL_DEMO_URL } from "@/lib/constants";
 
 const navItems = [
   { href: "#problema", label: "Retos" },
@@ -71,6 +72,19 @@ export default function LandingNav({ className }: { className?: string }) {
           </Link>
           <Button
             asChild
+            variant="outline"
+            className="hidden rounded-full border-[#1ABBB3] bg-white px-5 text-[#1ABBB3] shadow-sm hover:bg-[#1ABBB3]/10 sm:inline-flex"
+          >
+            <a
+              href={FARMAFACIL_DEMO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Probar demo
+            </a>
+          </Button>
+          <Button
+            asChild
             className="hidden rounded-full bg-[#1ABBB3] px-5 text-white shadow-sm hover:bg-[#159a94] sm:inline-flex"
           >
             <a href="#solicitar-demo">Solicitar demo</a>
@@ -113,6 +127,20 @@ export default function LandingNav({ className }: { className?: string }) {
             >
               Acceder
             </Link>
+            <Button
+              asChild
+              variant="outline"
+              className="mt-2 w-full rounded-full border-[#1ABBB3] bg-white text-[#1ABBB3] hover:bg-[#1ABBB3]/10"
+            >
+              <a
+                href={FARMAFACIL_DEMO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+              >
+                Probar demo
+              </a>
+            </Button>
             <Button asChild className="mt-2 w-full rounded-full bg-[#1ABBB3] text-white">
               <a href="#solicitar-demo" onClick={() => setOpen(false)}>
                 Solicitar demo

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { QrCode, CheckCircle2, Check } from "lucide-react";
+import { FARMAFACIL_DEMO_URL } from "@/lib/constants";
 
 function PhoneMockup() {
   return (
@@ -104,11 +105,25 @@ export default function HeroSection() {
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-gray-600">
               Menos colas, menos interrupciones y más tiempo para atender — desde el primer día.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <Button
                 asChild
                 size="lg"
                 className="h-12 rounded-full bg-[#1ABBB3] px-8 text-base font-semibold text-white hover:bg-[#159a94]"
+              >
+                <a
+                  href={FARMAFACIL_DEMO_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Probar demo interactiva
+                </a>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="h-12 rounded-full border-2 border-[#1ABBB3] bg-white px-8 text-base font-semibold text-[#1ABBB3] hover:bg-[#1ABBB3]/10"
               >
                 <a href="#solicitar-demo">Solicitar demo</a>
               </Button>

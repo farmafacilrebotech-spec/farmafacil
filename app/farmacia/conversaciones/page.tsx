@@ -1,60 +1,117 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageSquare, User, Calendar } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import Navbar from "@/components/common/Navbar";
 import Footer from "@/components/common/Footer";
-import { supabase } from "@/lib/supabaseClient";
+import { getFarmaciaSession } from "@/lib/sessionManager";
+import ConversacionesList from "@/components/farmacia/ConversacionesList";
+import ChatFarmacia from "@/components/farmacia/ChatFarmacia";
+
+type Conversacion = {
+  id: string;
+  cliente_id: string | null;
+  cliente?: {
+    nombre?: string | null;
+    telefono?: string | null;
+  } | null;
+  estado: "abierta" | "derivada" | "cerrada";
+  created_at: string;
+};
+
+const IS_DEV = process.env.NODE_ENV === "development";
+// TODO: Reemplazar este ID temporal por el farmacia_id autenticado real al reactivar protección.
+const DEV_FARMACIA_ID = process.env.NEXT_PUBLIC_DEV_FARMACIA_ID;
 
 export default function FarmaciaConversacionesPage() {
   const router = useRouter();
   const [farmaciaId, setFarmaciaId] = useState("");
-  const [conversaciones, setConversaciones] = useState<any[]>([]);
+  const [conversaciones, setConversaciones] = useState<Conversacion[]>([]);
+  const [selectedConversacionId, setSelectedConversacionId] = useState<string | null>(
+    null
+  );
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    checkAuth();
+    initFarmacia();
   }, []);
 
-  const checkAuth = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
+  const initFarmacia = async () => {
+    const session = getFarmaciaSession();
+    if (!session?.farmacia_id) {
+      if (IS_DEV && DEV_FARMACIA_ID) {
+        setFarmaciaId(DEV_FARMACIA_ID);
+        await fetchConversaciones(DEV_FARMACIA_ID);
+        setIsLoading(false);
+        return;
+      }
 
-    if (!user) {
-      router.push("/login");
+      router.push("/login-farmacia");
       return;
     }
 
-    const { data: farmacia } = await supabase
-      .from("farmacias")
-      .select("*")
-      .eq("user_id", user.id)
-      .single();
-
-    if (!farmacia) {
-      router.push("/catalogo");
-      return;
-    }
-
-    setFarmaciaId(farmacia.id);
-    await fetchConversaciones(farmacia.id);
+    setFarmaciaId(session.farmacia_id);
+    await fetchConversaciones(session.farmacia_id);
     setIsLoading(false);
   };
 
-  const fetchConversaciones = async (fId: string) => {
-    const { data } = await supabase
-      .from("conversaciones")
-      .select(`
-        *,
-        clientes(nombre, email)
-      `)
-      .eq("farmacia_id", fId)
-      .order("created_at", { ascending: false })
-      .limit(100);
+  const fetchConversaciones = useCallback(async (fId: string) => {
+    setError(null);
+    try {
+      const res = await fetch(
+        `/api/farmacia/conversaciones?farmacia_id=${encodeURIComponent(fId)}`
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || "No se pudieron cargar las conversaciones");
+      }
 
-    setConversaciones(data || []);
-  };
+      const prioridadEstado: Record<Conversacion["estado"], number> = {
+        derivada: 0,
+        abierta: 1,
+        cerrada: 2,
+      };
+
+      const sorted: Conversacion[] = (data.conversaciones || []).sort(
+        (a: Conversacion, b: Conversacion) => {
+          const porEstado = prioridadEstado[a.estado] - prioridadEstado[b.estado];
+          if (porEstado !== 0) return porEstado;
+          return (
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          );
+        }
+      );
+
+      setConversaciones(sorted);
+
+      if (sorted.length === 0) {
+        setSelectedConversacionId(null);
+        return;
+      }
+
+      const selectedSigueExistiendo = sorted.some(
+        (conv) => conv.id === selectedConversacionId
+      );
+
+      if (!selectedSigueExistiendo) {
+        setSelectedConversacionId(sorted[0].id);
+      }
+    } catch (err: any) {
+      setError(err?.message || "Error cargando conversaciones");
+    }
+  }, [selectedConversacionId]);
+
+  useEffect(() => {
+    if (!farmaciaId) return;
+
+    const intervalId = setInterval(() => {
+      void fetchConversaciones(farmaciaId);
+    }, 10000);
+
+    return () => clearInterval(intervalId);
+  }, [farmaciaId, fetchConversaciones]);
 
   if (isLoading) {
     return (
@@ -75,77 +132,42 @@ export default function FarmaciaConversacionesPage() {
               Conversaciones del Asistente
             </h1>
             <p className="text-gray-600">
-              Historial de interacciones con clientes
+              Gestiona respuestas manuales de tu farmacia
             </p>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                Historial ({conversaciones.length} conversaciones)
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {conversaciones.length === 0 ? (
-                <div className="text-center py-12">
-                  <MessageSquare className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500">
-                    No hay conversaciones aún
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-6">
-                  {conversaciones.map((conv) => (
-                    <div
-                      key={conv.id}
-                      className="p-4 border rounded-lg hover:shadow-md transition-shadow"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <User className="h-5 w-5 text-gray-400" />
-                          <span className="font-semibold">
-                            {conv.cliente_id
-                              ? conv.clientes?.nombre || "Cliente"
-                              : "Usuario Anónimo"}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1 text-sm text-gray-500">
-                          <Calendar className="h-4 w-4" />
-                          {new Date(conv.created_at).toLocaleString()}
-                        </div>
-                      </div>
+          {conversaciones.length === 0 && !isLoading && !error ? (
+            <div className="rounded-lg border bg-white py-12 text-center">
+              <MessageSquare className="mx-auto mb-4 h-12 w-12 text-gray-300" />
+              <p className="text-gray-500">No hay conversaciones todavia</p>
+            </div>
+          ) : (
+            <div className="grid min-h-[65vh] grid-cols-1 gap-4 lg:grid-cols-[340px_1fr]">
+              <aside className="rounded-lg border bg-white p-3">
+                <h2 className="mb-3 text-sm font-semibold text-[#1A1A1A]">
+                  Conversaciones ({conversaciones.length})
+                </h2>
+                <ConversacionesList
+                  conversaciones={conversaciones}
+                  selectedId={selectedConversacionId}
+                  onSelect={setSelectedConversacionId}
+                  isLoading={isLoading}
+                  error={error}
+                />
+              </aside>
 
-                      {/* Mensaje del usuario */}
-                      <div className="mb-3">
-                        <div className="bg-blue-50 p-3 rounded-lg">
-                          <p className="text-sm font-semibold text-blue-900 mb-1">
-                            Usuario:
-                          </p>
-                          <p className="text-gray-700">{conv.mensaje_usuario}</p>
-                        </div>
-                      </div>
-
-                      {/* Respuesta de la IA */}
-                      <div>
-                        <div className="bg-green-50 p-3 rounded-lg">
-                          <p className="text-sm font-semibold text-green-900 mb-1">
-                            Asistente IA:
-                          </p>
-                          <p className="text-gray-700">{conv.respuesta_ia}</p>
-                        </div>
-                      </div>
-
-                      {conv.clientes?.email && (
-                        <div className="mt-2 text-sm text-gray-500">
-                          📧 {conv.clientes.email}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+              <section className="min-h-[60vh]">
+                <ChatFarmacia
+                  conversacionId={selectedConversacionId}
+                  onSent={async () => {
+                    if (farmaciaId) {
+                      await fetchConversaciones(farmaciaId);
+                    }
+                  }}
+                />
+              </section>
+            </div>
+          )}
         </div>
       </div>
 

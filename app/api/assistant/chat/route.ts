@@ -1,125 +1,37 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabaseClient";
+import { POST as chatPost } from "@/app/api/chat/route";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { farmacia_id, cliente_id, mensaje } = body;
+    const normalizedBody = {
+      mensaje: body?.mensaje,
+      cliente_id: body?.cliente_id,
+      farmacia_id: body?.farmacia_id,
+      conversacion_id: body?.conversacion_id,
+      nombre_farmacia: body?.nombre_farmacia,
+    };
 
-    if (!mensaje) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
-    }
-
-    let farmaciaName = "FarmaFácil";
-    let farmaciaIdReal = null;
-    
-    // Solo buscar farmacia si NO es "general" y supabase está configurado
-    if (farmacia_id && farmacia_id !== "general" && process.env.NEXT_PUBLIC_SUPABASE_URL) {
-      try {
-        const { data: farmacia } = await supabase
-          .from("farmacias")
-          .select("id, nombre")
-          .eq("id", farmacia_id)
-          .single();
-        
-        if (farmacia) {
-          farmaciaName = farmacia.nombre;
-          farmaciaIdReal = farmacia.id;
-        }
-      } catch (error) {
-        console.warn("Could not fetch farmacia data:", error);
-      }
-    }
-
-    const systemPrompt = `Eres un asistente virtual profesional de ${farmaciaName}, una farmacia que utiliza FarmaFácil.
-Tu tono es amable, cercano y profesional. Ayudas a los clientes con:
-- Consultas sobre medicamentos y productos
-- Información sobre disponibilidad y precios
-- Recomendaciones generales de salud
-- Guía sobre cómo usar la plataforma
-- Información de contacto y horarios
-
-Siempre recuerda que NO puedes:
-- Diagnosticar enfermedades
-- Prescribir medicamentos
-- Reemplazar la consulta médica
-
-Si la consulta es médica seria, recomienda consultar con un profesional de la salud.`;
-
-    const openaiApiKey = process.env.OPENAI_API_KEY;
-
-    if (!openaiApiKey) {
-      const mockResponse = `Hola! Soy el asistente virtual de ${farmaciaName}. Por el momento estoy en modo de prueba. ¿En qué puedo ayudarte hoy?`;
-
-      // Solo guardar si hay un farmacia_id válido y supabase está configurado
-      if (farmaciaIdReal && process.env.NEXT_PUBLIC_SUPABASE_URL) {
-        try {
-          await supabase.from("conversaciones").insert({
-            farmacia_id: farmaciaIdReal,
-            cliente_id: cliente_id || null,
-            mensaje_usuario: mensaje,
-            respuesta_ia: mockResponse,
-          });
-        } catch (error) {
-          console.warn("Could not save conversation:", error);
-        }
-      }
-
-      return NextResponse.json({
-        success: true,
-        respuesta: mockResponse,
-      });
-    }
-
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const proxiedRequest = new Request(request.url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${openaiApiKey}`,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(normalizedBody),
+    });
+
+    const response = await chatPost(proxiedRequest);
+    const payload = await response.json();
+
+    return NextResponse.json(
+      {
+        success: response.ok,
+        ...payload,
       },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: mensaje },
-        ],
-        temperature: 0.7,
-        max_tokens: 500,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error("OpenAI API request failed");
-    }
-
-    const data = await response.json();
-    const respuestaIA = data.choices[0]?.message?.content || "Lo siento, no pude procesar tu consulta.";
-
-    // Solo guardar si hay un farmacia_id válido y supabase está configurado
-    if (farmaciaIdReal && process.env.NEXT_PUBLIC_SUPABASE_URL) {
-      try {
-        await supabase.from("conversaciones").insert({
-          farmacia_id: farmaciaIdReal,
-          cliente_id: cliente_id || null,
-          mensaje_usuario: mensaje,
-          respuesta_ia: respuestaIA,
-        });
-      } catch (error) {
-        console.warn("Could not save conversation:", error);
-      }
-    }
-
-    return NextResponse.json({
-      success: true,
-      respuesta: respuestaIA,
-    });
+      { status: response.status }
+    );
   } catch (error: any) {
-    console.error("Error in chat assistant:", error);
+    console.error("Error in /api/assistant/chat compatibility route:", error);
     return NextResponse.json(
       { error: error.message || "Failed to process message" },
       { status: 500 }

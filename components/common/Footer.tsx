@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import FooterLogo from "@/components/common/FooterLogo";
+import { FARMAFACIL_DEMO_URL } from "@/lib/constants";
 
 export default function Footer() {
   return (
@@ -38,12 +39,14 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/demo"
+                <a
+                  href={FARMAFACIL_DEMO_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
                 >
                   Demo
-                </Link>
+                </a>
               </li>
               <li>
                 <Link

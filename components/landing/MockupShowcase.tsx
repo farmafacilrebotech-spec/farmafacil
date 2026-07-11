@@ -1,4 +1,6 @@
 import { Smartphone, Monitor, LayoutDashboard } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { FARMAFACIL_DEMO_URL } from "@/lib/constants";
 
 function MobileClientMock() {
   return (
@@ -119,6 +121,26 @@ export default function MockupShowcase() {
           <MobileClientMock />
           <KioskTouchMock />
           <PharmacyPanelMock />
+        </div>
+
+        <div className="mt-14 flex flex-col items-center text-center">
+          <p className="max-w-2xl text-gray-600">
+            Explora FarmaFácil con datos de demostración y descubre el recorrido del cliente, el
+            kiosco y los paneles de gestión.
+          </p>
+          <Button
+            asChild
+            size="lg"
+            className="mt-6 h-12 rounded-full bg-[#1ABBB3] px-8 text-base font-semibold text-white hover:bg-[#159a94]"
+          >
+            <a
+              href={FARMAFACIL_DEMO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Entrar en la demo
+            </a>
+          </Button>
         </div>
       </div>
     </section>
