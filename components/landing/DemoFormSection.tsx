@@ -1,4 +1,9 @@
-import ContactForm from "./ContactForm";
+import dynamic from "next/dynamic";
+
+/** Formulario interactivo (estado + toast); se carga en chunk aparte */
+const ContactForm = dynamic(() => import("./ContactForm"), {
+  ssr: true,
+});
 
 export default function DemoFormSection() {
   return (

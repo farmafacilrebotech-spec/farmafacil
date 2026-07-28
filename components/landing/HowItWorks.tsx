@@ -35,45 +35,37 @@ export default function HowItWorks() {
           Empieza a funcionar el mismo día.
         </p>
 
-        <div className="mt-12 sm:mt-14">
-          <div className="hidden lg:block">
-            <div className="relative flex items-start justify-between gap-4">
-              <div className="absolute left-[12%] right-[12%] top-[2.25rem] h-0.5 bg-gradient-to-r from-[#4ED3C2] via-[#1ABBB3] to-[#4ED3C2]" aria-hidden />
-              {steps.map(({ step, icon: Icon, title, desc }) => (
-                <div key={step} className="relative z-10 flex w-[30%] flex-col items-center text-center">
-                  <div className="flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full border-4 border-white bg-[#1ABBB3] text-white shadow-lg ring-2 ring-[#4ED3C2]/40">
-                    <Icon className="h-8 w-8" aria-hidden />
-                  </div>
-                  <span className="mt-4 text-xs font-bold uppercase tracking-wider text-[#1ABBB3]">
-                    Paso {step}
-                  </span>
-                  <h3 className="mt-2 text-lg font-bold text-[#1A1A1A]">{title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-gray-600">{desc}</p>
+        <ol className="relative mt-12 flex flex-col space-y-8 sm:mt-14 lg:flex-row lg:items-start lg:justify-between lg:gap-4 lg:space-y-0">
+          <div
+            className="absolute left-[12%] right-[12%] top-[2.25rem] hidden h-0.5 bg-gradient-to-r from-[#4ED3C2] via-[#1ABBB3] to-[#4ED3C2] lg:block"
+            aria-hidden
+          />
+          {steps.map(({ step, icon: Icon, title, desc }) => (
+            <li
+              key={step}
+              className="relative z-10 flex gap-4 lg:w-[30%] lg:flex-col lg:items-center lg:gap-0 lg:text-center"
+            >
+              <div className="flex shrink-0 flex-col items-center lg:contents">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1ABBB3] text-white shadow-md lg:h-[4.5rem] lg:w-[4.5rem] lg:border-4 lg:border-white lg:shadow-lg lg:ring-2 lg:ring-[#4ED3C2]/40">
+                  <Icon className="h-6 w-6 lg:h-8 lg:w-8" aria-hidden />
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <ol className="space-y-8 lg:hidden">
-            {steps.map(({ step, icon: Icon, title, desc }) => (
-              <li key={step} className="flex gap-4">
-                <div className="flex shrink-0 flex-col items-center">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1ABBB3] text-white shadow-md">
-                    <Icon className="h-6 w-6" aria-hidden />
-                  </div>
-                  {step < 3 && (
-                    <div className="mt-2 h-full min-h-[2rem] w-0.5 flex-1 bg-gradient-to-b from-[#1ABBB3] to-[#4ED3C2]/50" />
-                  )}
-                </div>
-                <div className="pb-2 pt-1">
-                  <span className="text-xs font-bold uppercase text-[#1ABBB3]">Paso {step}</span>
-                  <h3 className="text-lg font-bold text-[#1A1A1A]">{title}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-gray-600">{desc}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
+                {step < 3 && (
+                  <div
+                    className="mt-2 h-full min-h-[2rem] w-0.5 flex-1 bg-gradient-to-b from-[#1ABBB3] to-[#4ED3C2]/50 lg:hidden"
+                    aria-hidden
+                  />
+                )}
+              </div>
+              <div className="pb-2 pt-1 lg:contents">
+                <span className="text-xs font-bold uppercase text-[#1ABBB3] lg:mt-4 lg:tracking-wider">
+                  Paso {step}
+                </span>
+                <h3 className="text-lg font-bold text-[#1A1A1A] lg:mt-2">{title}</h3>
+                <p className="mt-1 text-sm leading-relaxed text-gray-600 lg:mt-2">{desc}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
