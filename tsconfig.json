@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -18,14 +18,13 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@/components/*": ["components/*"],
-      "@/assistants/*": ["components/assistants/*"],
-      "@/cart/*": ["components/cart/*"],
-      "@/common/*": ["components/common/*"],
-      "@/ui/*": ["components/ui/*"]
+      "@/components/*": ["./components/*"],
+      "@/assistants/*": ["./components/assistants/*"],
+      "@/cart/*": ["./components/cart/*"],
+      "@/common/*": ["./components/common/*"],
+      "@/ui/*": ["./components/ui/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
