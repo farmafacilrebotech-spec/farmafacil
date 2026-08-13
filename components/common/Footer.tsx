@@ -118,7 +118,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center space-x-2 text-gray-400 text-sm">
                 <Mail className="h-4 w-4" />
-                <span>farmafacil.rebotech@gmail.com</span>
+                <span>contacto@farmafacil.solutions</span>
               </li>
               <li className="flex items-center space-x-2 text-gray-400 text-sm">
                 <Phone className="h-4 w-4" />

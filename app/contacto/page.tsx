@@ -252,7 +252,7 @@ export default function ContactoPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-[#1A1A1A] mb-1">Email</h3>
-                      <p className="text-gray-600">farmafacil.rebotech@gmail.com</p>
+                      <p className="text-gray-600">contacto@farmafacil.solutions</p>
                     </div>
                   </div>
 

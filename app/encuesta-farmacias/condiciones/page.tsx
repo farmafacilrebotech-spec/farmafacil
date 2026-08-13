@@ -30,7 +30,7 @@ export default function CondicionesEstudioPage() {
               <h2 className="text-lg font-semibold text-[#1A1A1A]">1. Organizador</h2>
               <p>
                 La iniciativa es impulsada por FarmaFácil / ReBoTech Solutions (datos de contacto
-                públicos en la web: farmafacil.rebotech@gmail.com). Los datos fiscales y jurídicos
+                públicos en la web: contacto@farmafacil.solutions). Los datos fiscales y jurídicos
                 definitivos del responsable del tratamiento y de la promoción deberán completarse
                 tras revisión legal.
               </p>

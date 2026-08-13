@@ -132,7 +132,7 @@ Para pruebas, puedes crear usuarios de prueba:
 ## Soporte
 
 Para más información o soporte técnico:
-- Email: farmafacil.rebotech@gmail.com
+- Email: farmafacil.rebotech@gmail.com; contacto@farmafacil.solutions
 - Website: www.farmafacil.es
 
 ## Tecnologías Utilizadas
