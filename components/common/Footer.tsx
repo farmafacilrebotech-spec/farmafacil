@@ -50,6 +50,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/encuesta-farmacias"
+                  className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
+                >
+                  Estudio farmacias
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/contacto"
                   className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
                 >

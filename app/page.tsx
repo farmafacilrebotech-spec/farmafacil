@@ -7,6 +7,7 @@ import HowItWorks from "@/components/landing/HowItWorks";
 import BenefitsGrid from "@/components/landing/BenefitsGrid";
 import UseCasesSection from "@/components/landing/UseCasesSection";
 import DifferentiationSection from "@/components/landing/DifferentiationSection";
+import SurveyCtaSection from "@/components/landing/SurveyCtaSection";
 import CTASection from "@/components/landing/CTASection";
 import Footer from "@/components/common/Footer";
 
@@ -44,6 +45,7 @@ export default function Home() {
         <UseCasesSection />
         <DifferentiationSection />
         <SocialProofSection />
+        <SurveyCtaSection />
         <CTASection />
         <DemoFormSection />
       </main>

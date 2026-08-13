@@ -1,1 +1,1 @@
-export const FARMAFACIL_DEMO_URL = "https://farmafacil-demo-completo.vercel.app";
+export const FARMAFACIL_DEMO_URL = "https://demo.farmafacil.solutions";

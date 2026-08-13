@@ -8,7 +8,7 @@ Aplicación web para **digitalizar la experiencia en farmacia**: catálogo acces
 
 | Ámbito | Función |
 |--------|---------|
-| **Público / marketing** | Landing en `/`, página de demo `/demo`, contacto `/contacto` y formulario de solicitud de demo (integración con webhook / Google Sheets). |
+| **Público / marketing** | Landing en `/`, página de demo `/demo`, contacto `/contacto`, formulario de solicitud de demo (webhook / Google Sheets) y **encuesta a titulares** en `/encuesta-farmacias`. |
 | **Cliente final** | Catálogo por farmacia (`/catalogo`, `/catalogo/[codigo]`, `/qr/[codigo]`), carrito, checkout y seguimiento de pedidos. |
 | **Farmacia** | Acceso (`/login-farmacia`), panel, gestión de pedidos, conversaciones y catálogo propio. |
 | **Administración** | Rutas bajo `/admin` protegidas por Supabase Auth y rol `admin` en la tabla `profiles`. |
@@ -63,7 +63,10 @@ Configúralas en **`.env.local`** (no las subas al repositorio). Las más habitu
 | `OPENAI_API_KEY` | Asistente IA (`/api/assistant/chat`) |
 | `NEXT_PUBLIC_CLIENTES_URL` / `NEXT_PUBLIC_KIOSKO_URL` | Bases URL para enlaces generados (`lib/urlBuilder.ts`) |
 | Variables **WhatsApp** (`WHATSAPP_*`) | Integración opcional de mensajería (`lib/whatsapp-service.ts`) |
-| Variables **Google** (`GOOGLE_CLIENT_EMAIL`, `GOOGLE_PRIVATE_KEY`, `GOOGLE_CALENDAR_ID`, `GSHEET_GENERAL_ID`) | Reserva de citas / calendario (`app/api/cita/*`) |
+| Variables **Google** (`GOOGLE_CLIENT_EMAIL`, `GOOGLE_PRIVATE_KEY`, `GOOGLE_CALENDAR_ID`, `GSHEET_GENERAL_ID`) | Reserva de citas / calendario (`app/api/cita/*`) y registro de la encuesta |
+| `RESEND_API_KEY`, `ENCUESTA_EMAIL_FROM`, `ENCUESTA_REPLY_TO`, `ENCUESTA_ADMIN_EMAIL` | Emails de la encuesta (aviso interno + confirmación al participante) |
+| `GOOGLE_SHEETS_ENCUESTAS_URL`, `GOOGLE_SHEETS_SECRET` | Registro de la encuesta vía Google Apps Script |
+| `ENCUESTA_ENABLED`, `ENCUESTA_BONOS_DISPONIBLES`… | Control del módulo encuesta (ver `docs/ENCUESTA_FARMACIAS.md`) |
 
 Si falta alguna clave opcional, la parte correspondiente puede no funcionar, pero el resto de la app puede seguir arrancando.
 
@@ -73,6 +76,7 @@ Si falta alguna clave opcional, la parte correspondiente puede no funcionar, per
 
 - **`/`** — Landing de producto (componentes en `components/landing/`).
 - **`/demo`**, **`/contacto`** — Demo y contacto.
+- **`/encuesta-farmacias`** — Estudio / encuesta a titulares (módulo aislado; ver `docs/ENCUESTA_FARMACIAS.md`).
 - **`/catalogo`**, **`/catalogo/[codigo]`**, **`/qr/[codigo]`** — Catálogo y acceso por código/QR.
 - **`/checkout`**, **`/pedidos/[id]`** — Flujo de compra y detalle de pedido.
 - **`/login`**, **`/register`**, **`/login-farmacia`**, **`/login-cliente`** — Entradas de sesión según perfil.

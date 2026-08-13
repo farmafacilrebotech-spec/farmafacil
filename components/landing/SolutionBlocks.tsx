@@ -18,7 +18,7 @@ const blocks = [
   {
     icon: Bot,
     title: "Asistente con IA",
-    micro: "Responde lo repetitivo por ti",
+    micro: "Responde lo repetitivo para ti",
     bullets: ["Responde dudas frecuentes", "Te devuelve minutos en el mostrador"],
     accent: "from-[#1ABBB3]/10 to-white",
   },
