@@ -163,7 +163,7 @@ export default function PrivacidadPage() {
             <p>
               Tienes derecho a acceder, rectificar, eliminar y portar tus 
               datos personales. Para ejercer estos derechos, contacta con 
-              nosotros en privacidad@farmafacil.com
+              nosotros en privacidad@farmafacil.solutions
             </p>
 
             <h2>6. Cookies</h2>

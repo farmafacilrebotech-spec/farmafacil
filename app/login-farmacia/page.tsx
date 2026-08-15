@@ -90,7 +90,7 @@ export default function LoginFarmaciaPage() {
         <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
                 <img 
-                  src="/logo_farmafacil.png"
+                  src="//images/logo/farmafacil-logo.png"
                   alt="Logo FarmaFácil"
                   className="w-20 h-20 object-contain"
                 />

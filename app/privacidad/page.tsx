@@ -13,7 +13,7 @@ export default function PrivacidadPage() {
           </h1>
           
           <p className="text-sm text-gray-500 mb-8">
-            Última actualización: 7 de noviembre de 2025
+            Última actualización: 15 de agosto de 2026
           </p>
           
           <div className="prose max-w-none text-gray-700 space-y-6">
@@ -135,8 +135,8 @@ export default function PrivacidadPage() {
               </ul>
               <p className="mb-4 leading-relaxed">
                 Para ejercer estos derechos, contacte con nosotros en 
-                <a href="mailto:privacidad@farmafacil.com" className="text-[#1ABBB3] hover:underline ml-1">
-                  privacidad@farmafacil.com
+                <a href="mailto:privacidad@farmafacil.solutions" className="text-[#1ABBB3] hover:underline ml-1">
+                  privacidad@farmafacil.solutions
                 </a>
               </p>
             </section>
@@ -197,8 +197,8 @@ export default function PrivacidadPage() {
               <ul className="list-none mb-4 space-y-2">
                 <li>
                   <strong>Email:</strong> 
-                  <a href="mailto:privacidad@farmafacil.com" className="text-[#1ABBB3] hover:underline ml-1">
-                    privacidad@farmafacil.com
+                  <a href="mailto:privacidad@farmafacil.solutions" className="text-[#1ABBB3] hover:underline ml-1">
+                    privacidad@farmafacil.solutions
                   </a>
                 </li>
                 <li>

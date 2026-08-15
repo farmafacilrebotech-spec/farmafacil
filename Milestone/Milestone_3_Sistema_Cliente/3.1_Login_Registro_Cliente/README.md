@@ -86,7 +86,7 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <Image
-            src="/logo_farmafacil.png"
+            src="//images/logo/farmafacil-logo.png"
             alt="FarmaFácil"
             width={150}
             height={40}
@@ -203,7 +203,7 @@ export default function LoginClientePage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <Image
-            src="/logo_farmafacil.png"
+            src="//images/logo/farmafacil-logo.png"
             alt="FarmaFácil"
             width={150}
             height={40}

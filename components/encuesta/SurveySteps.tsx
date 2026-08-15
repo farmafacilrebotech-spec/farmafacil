@@ -926,7 +926,7 @@ export function StepSoluciones({ data, errors, update }: Props) {
               className="font-semibold text-[#1ABBB3] underline"
               target="_blank"
             >
-              condiciones de participación e incentivo
+              condiciones de participación en el estudio
             </Link>
             . *
           </span>

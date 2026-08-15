@@ -112,5 +112,5 @@ Esta fase documenta la integración con **Supabase**, el sistema de **QRs para f
 ---
 
 *Documentación generada para FarmaFácil - ReboTech Solutions*
-*Última actualización: Diciembre 2024*
+*Última actualización: Agosto 2026*
 

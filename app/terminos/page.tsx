@@ -13,7 +13,7 @@ export default function TerminosPage() {
           </h1>
           
           <p className="text-sm text-gray-500 mb-8">
-            Última actualización: 7 de noviembre de 2025
+            Última actualización: 15 de agosto de 2026
           </p>
           
           <div className="prose max-w-none text-gray-700 space-y-6">

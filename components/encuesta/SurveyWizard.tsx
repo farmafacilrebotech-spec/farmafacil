@@ -307,21 +307,21 @@ export default function SurveyWizard({
     return (
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-10">
         <h2 className="text-2xl font-bold tracking-tight text-[#1A1A1A]">
-          Gracias por ayudarnos a conocer mejor la realidad de las farmacias
+        ¡Muchas gracias por tu participación!
         </h2>
         <p className="mt-4 text-gray-600">
-          Hemos recibido tu participación. Revisaremos los datos facilitados para comprobar que
-          la respuesta es válida y corresponde a una farmacia real.
+          Hemos recibido tu participación. 
+          En los próximos días revisaremos la información para confirmar que cumple las condiciones del estudio.
         </p>
         {bonosDisponibles ? (
           <p className="mt-4 rounded-xl bg-[#1ABBB3]/10 p-4 text-sm text-[#1A1A1A]">
-            Si la participación cumple las condiciones del estudio, recibirás el bono regalo de
-            Amazon de 10 € en el email indicado.
+            Una vez validada, recibirás automáticamente tu bono regalo de 
+            Amazon de 10 € en el email que nos has indicado.
           </p>
         ) : (
           <p className="mt-4 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">
-            Tu participación ha quedado registrada. En este momento el incentivo puede estar
-            agotado o pausado; te informaremos si procede.
+            Tu participación ha quedado registrada. En este momento los bonos regalo pueden estar
+            agotados o pausados; te informaremos si procede.
           </p>
         )}
         {result.comunidad && (
@@ -350,7 +350,7 @@ export default function SurveyWizard({
           ¿Nos ayudas en solo 5 minutos?
         </p>
         <p className="mt-3 text-gray-600">
-          Queremos conocer los principales retos de las farmacias comunitarias para desarrollar
+          Queremos conocer los principales retos de las farmacias para desarrollar
           mejores soluciones para el sector.
         </p>
 
@@ -372,8 +372,8 @@ export default function SurveyWizard({
 
         {!bonosDisponibles && (
           <p className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900">
-            El incentivo puede estar temporalmente agotado. Aun así puedes participar en el
-            estudio.
+            Los bonos regalo pueden estar temporalmente agotados. Aun así puedes participar en el
+            estudio y recibir un bono regalo de 10 € si vuelven a estar disponibles. si tu participación es válida.
           </p>
         )}
 

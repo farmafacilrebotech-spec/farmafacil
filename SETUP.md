@@ -148,4 +148,4 @@ Para más información o soporte técnico:
 
 ---
 
-Desarrollado por ReBoTech Solutions para la demo de Lanzadera.
+Desarrollado por ReBoTech Solutions - FarmaFácil.

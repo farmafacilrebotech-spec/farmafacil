@@ -26,6 +26,38 @@ export const metadata: Metadata = {
   title: 'FarmaFácil — Digitaliza tu farmacia sin complicaciones',
   description:
     'Reduce colas, automatiza pedidos y mejora la atención con catálogo por QR, kiosko en tienda y asistente. Solicita demo gratuita.',
+
+  icons: {
+    icon: '/logo/favicon.png',
+    shortcut: '/logo/favicon.png',
+    apple: '/logo/apple-touch-icon.png',
+  },
+
+  openGraph: {
+    title: 'FarmaFácil — Digitaliza tu farmacia sin complicaciones',
+    description:
+      'Reduce colas, automatiza pedidos y mejora la atención con catálogo por QR, kiosko en tienda y asistente.',
+    url: 'https://farmafacil.solutions',
+    siteName: 'FarmaFácil',
+    locale: 'es_ES',
+    type: 'website',
+    images: [
+      {
+        url: '/logo/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'FarmaFácil',
+      },
+    ],
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FarmaFácil',
+    description:
+      'Reduce colas, automatiza pedidos y mejora la atención.',
+    images: ['/logo/og-image.jpg'],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

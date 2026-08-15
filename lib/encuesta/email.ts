@@ -92,15 +92,31 @@ function programaGestion(data: SurveyFormData): string {
 }
 
 function brandHeaderHtml(): string {
+  const logoUrl = "https://www.farmafacil.solutions/images/logo/farmafacil-logo.png";
   return `
     <tr>
       <td style="background-color:#1ABBB3;padding:22px 28px;border-radius:12px 12px 0 0">
-        <div style="font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.2px">
-          FarmaFácil
-        </div>
-        <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#E8FFFC;margin-top:4px">
-          Digitalización sencilla para la farmacia comunitaria
-        </div>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse">
+          <tr>
+            <td valign="middle" style="vertical-align:middle;padding-right:16px;line-height:0">
+              <img
+                src="${logoUrl}"
+                alt="FarmaFácil"
+                width="44"
+                height="44"
+                style="display:block;border:0;outline:none;text-decoration:none;width:44px;height:44px"
+              />
+            </td>
+            <td valign="middle" style="vertical-align:middle">
+              <div style="font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:0.2px">
+                FarmaFácil
+              </div>
+              <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#E8FFFC;margin-top:4px">
+                Construyendo la farmacia del futuro
+              </div>
+            </td>
+          </tr>
+        </table>
       </td>
     </tr>`;
 }
@@ -456,7 +472,7 @@ export function buildParticipantEmail(params: {
             Hola, ${escapeHtml(firstName)}:
           </p>
           <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 12px;line-height:1.6">
-            Gracias por participar en nuestro estudio sobre los retos actuales de la farmacia comunitaria.
+            Gracias por participar en nuestro estudio y dedicar unos minutos a ayudarnos a construir el futuro de las farmacias.
           </p>
           <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 12px;line-height:1.6">
             Hemos recibido correctamente la información correspondiente a <strong>${escapeHtml(
@@ -504,10 +520,10 @@ export function buildParticipantEmail(params: {
             Equipo FarmaFácil
           </p>
           <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6b7280;margin:0 0 14px">
-            Digitalización sencilla para la farmacia comunitaria
+            Construyendo la farmacia del futuro
           </p>
           <p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6b7280;margin:0 0 10px;line-height:1.5">
-            Este correo confirma la recepción de la encuesta, pero no supone la aprobación automática del incentivo.
+            Este correo confirma la recepción de la encuesta, pero no supone la aprobación automática del bono.
           </p>
           ${
             replyTo
@@ -572,9 +588,9 @@ export function buildParticipantEmail(params: {
     "",
     "Gracias por ayudarnos a conocer mejor la realidad de las farmacias.",
     "Equipo FarmaFácil",
-    "Digitalización sencilla para la farmacia comunitaria",
+    "Construyendo la farmacia del futuro",
     "",
-    "Este correo confirma la recepción de la encuesta, pero no supone la aprobación automática del incentivo.",
+    "Este correo confirma la recepción de la encuesta, pero no supone la aprobación automática del bono.",
     replyTo ? `Contacto: ${replyTo}` : "",
   ]
     .filter((line) => line !== undefined)

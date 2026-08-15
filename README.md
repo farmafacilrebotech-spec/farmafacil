@@ -1,115 +1,467 @@
-# FarmaFácil
+# 📐 Milestone 1.5: Navegación y Layout Principal
 
-Aplicación web para **digitalizar la experiencia en farmacia**: catálogo accesible por **QR**, **pedidos**, **panel para la oficina de farmacia**, **asistente con IA** y una **landing** orientada a captar demos. Está pensada para que los clientes consulten y pidan con menos fricción y el equipo farmacéutico recupere tiempo en el mostrador.
+## 📑 Índice de Pasos
 
----
-
-## Para qué sirve
-
-| Ámbito | Función |
-|--------|---------|
-| **Público / marketing** | Landing en `/`, página de demo `/demo`, contacto `/contacto`, formulario de solicitud de demo (webhook / Google Sheets) y **encuesta a titulares** en `/encuesta-farmacias`. |
-| **Cliente final** | Catálogo por farmacia (`/catalogo`, `/catalogo/[codigo]`, `/qr/[codigo]`), carrito, checkout y seguimiento de pedidos. |
-| **Farmacia** | Acceso (`/login-farmacia`), panel, gestión de pedidos, conversaciones y catálogo propio. |
-| **Administración** | Rutas bajo `/admin` protegidas por Supabase Auth y rol `admin` en la tabla `profiles`. |
-
-En conjunto, el producto comunica valor en la web pública y ofrece herramientas operativas para farmacias y sus clientes.
+1. [Paso 1: Layout raíz](#paso-1-layout-raíz)
+2. [Paso 2: Componente Navbar](#paso-2-componente-navbar)
+3. [Paso 3: Componente Footer](#paso-3-componente-footer)
+4. [Paso 4: Navegación responsive](#paso-4-navegación-responsive)
+5. [Paso 5: Metadatos y SEO](#paso-5-metadatos-y-seo)
 
 ---
 
-## Cómo está hecha (stack)
+## Paso 1: Layout raíz
 
-- **Next.js 13** (App Router)
-- **React 18** + **TypeScript**
-- **Tailwind CSS** + **Radix UI** (componentes en `components/ui/`)
-- **Supabase** (base de datos, auth en zona admin)
-- **API Routes** en `app/api/` (pedidos, productos, contacto, asistente, citas, etc.)
+### Descripción
+Configuración del layout principal que envuelve toda la aplicación.
 
----
+### Archivo: `app/layout.tsx`
+```typescript
+import type { Metadata } from 'next'
+import localFont from 'next/font/local'
+import './globals.css'
+import { Navbar } from '@/components/common/Navbar'
+import { Footer } from '@/components/common/Footer'
+import { Toaster } from '@/components/ui/sonner'
 
-## Cómo ejecutarla en local
+const inter = localFont({
+  src: [
+    { path: '../public/fonts/inter/Inter-Regular.ttf', weight: '400', style: 'normal' },
+    { path: '../public/fonts/inter/Inter-SemiBold.ttf', weight: '600', style: 'normal' },
+  ],
+  variable: '--font-inter',
+})
 
-Requisitos: **Node.js** (recomendado LTS) y **npm**.
+export const metadata: Metadata = {
+  title: 'FarmaFácil - Tu farmacia online',
+  description: 'Encuentra y compra productos de farmacia de forma fácil y segura',
+  keywords: ['farmacia', 'online', 'medicamentos', 'parafarmacia'],
+}
 
-```bash
-npm install
-cp .env.example .env.local   # si existe ejemplo; si no, crea .env.local a mano
-npm run dev
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="es">
+      <body className={inter.className}>
+        <div className="min-h-screen flex flex-col">
+          <Navbar />
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </div>
+        <Toaster position="top-right" />
+      </body>
+    </html>
+  )
+}
 ```
 
-Abre [http://localhost:3000](http://localhost:3000).
+### Características
+- Fuente Inter local (`next/font/local`, archivos en `public/fonts/inter/`)
+- Layout flex con min-height: 100vh
+- Navbar fijo en la parte superior
+- Footer en la parte inferior
+- Sistema de notificaciones global
 
-Otros comandos útiles:
+### Resultado
+✅ Layout raíz configurado
 
-```bash
-npm run build      # compilación de producción
-npm run start      # sirve el build
-npm run lint       # ESLint
-npm run typecheck  # TypeScript sin emitir archivos
+---
+
+## Paso 2: Componente Navbar
+
+### Descripción
+Barra de navegación principal con logo, menú y acciones de usuario.
+
+### Archivo: `components/common/Navbar.tsx`
+```typescript
+'use client'
+
+import Link from 'next/link'
+import Image from 'next/image'
+import { useState, useEffect } from 'react'
+import { Button } from '@/components/ui/button'
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu'
+import { Menu, User, LogOut, ShoppingCart } from 'lucide-react'
+import { sessionManager } from '@/lib/sessionManager'
+
+export function Navbar() {
+  const [session, setSession] = useState<any>(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  useEffect(() => {
+    setSession(sessionManager.getSession())
+    
+    const handleSessionChange = () => {
+      setSession(sessionManager.getSession())
+    }
+    
+    window.addEventListener('sessionChange', handleSessionChange)
+    return () => window.removeEventListener('sessionChange', handleSessionChange)
+  }, [])
+
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' })
+    sessionManager.clearSession()
+    window.location.href = '/'
+  }
+
+  return (
+    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          {/* Logo */}
+          <div className="flex items-center">
+            <Link href="/" className="flex items-center">
+              <Image
+                src="//images/logo/farmafacil-logo.png"
+                alt="FarmaFácil"
+                width={150}
+                height={40}
+                className="h-10 w-auto"
+              />
+            </Link>
+          </div>
+
+          {/* Menú Desktop */}
+          <div className="hidden md:flex items-center space-x-8">
+            <Link 
+              href="/catalogo" 
+              className="text-gray-700 hover:text-[#1ABBB3] transition-colors"
+            >
+              Catálogo
+            </Link>
+            <Link 
+              href="/contacto" 
+              className="text-gray-700 hover:text-[#1ABBB3] transition-colors"
+            >
+              Contacto
+            </Link>
+            
+            {session ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="flex items-center gap-2">
+                    <User className="h-5 w-5" />
+                    {session.nombre}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild>
+                    <Link href={session.tipo === 'farmacia' ? '/dashboard' : '/cliente/dashboard'}>
+                      Mi Panel
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Cerrar Sesión
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" asChild>
+                  <Link href="/login-cliente">Acceder</Link>
+                </Button>
+                <Button 
+                  asChild
+                  className="bg-[#1ABBB3] hover:bg-[#158f89]"
+                >
+                  <Link href="/register">Registrarse</Link>
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {/* Botón menú móvil */}
+          <div className="md:hidden flex items-center">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <Menu className="h-6 w-6" />
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Menú móvil */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white border-t">
+          <div className="px-4 py-2 space-y-2">
+            <Link 
+              href="/catalogo" 
+              className="block py-2 text-gray-700"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Catálogo
+            </Link>
+            <Link 
+              href="/contacto" 
+              className="block py-2 text-gray-700"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Contacto
+            </Link>
+            {/* ... resto del menú móvil */}
+          </div>
+        </div>
+      )}
+    </nav>
+  )
+}
 ```
 
----
-
-## Variables de entorno (resumen)
-
-Configúralas en **`.env.local`** (no las subas al repositorio). Las más habituales:
-
-| Variable | Uso |
-|----------|-----|
-| `NEXT_PUBLIC_SUPABASE_URL` | URL del proyecto Supabase |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clave anónima (cliente y middleware admin) |
-| `NEXT_PUBLIC_GOOGLE_SHEET_WEBHOOK_URL` | Webhook (p. ej. Apps Script) para el formulario de contacto/demo |
-| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 (opcional; el `layout` la referencia si existe) |
-| `OPENAI_API_KEY` | Asistente IA (`/api/assistant/chat`) |
-| `NEXT_PUBLIC_CLIENTES_URL` / `NEXT_PUBLIC_KIOSKO_URL` | Bases URL para enlaces generados (`lib/urlBuilder.ts`) |
-| Variables **WhatsApp** (`WHATSAPP_*`) | Integración opcional de mensajería (`lib/whatsapp-service.ts`) |
-| Variables **Google** (`GOOGLE_CLIENT_EMAIL`, `GOOGLE_PRIVATE_KEY`, `GOOGLE_CALENDAR_ID`, `GSHEET_GENERAL_ID`) | Reserva de citas / calendario (`app/api/cita/*`) y registro de la encuesta |
-| `RESEND_API_KEY`, `ENCUESTA_EMAIL_FROM`, `ENCUESTA_REPLY_TO`, `ENCUESTA_ADMIN_EMAIL` | Emails de la encuesta (aviso interno + confirmación al participante) |
-| `GOOGLE_SHEETS_ENCUESTAS_URL`, `GOOGLE_SHEETS_SECRET` | Registro de la encuesta vía Google Apps Script |
-| `ENCUESTA_ENABLED`, `ENCUESTA_BONOS_DISPONIBLES`… | Control del módulo encuesta (ver `docs/ENCUESTA_FARMACIAS.md`) |
-
-Si falta alguna clave opcional, la parte correspondiente puede no funcionar, pero el resto de la app puede seguir arrancando.
+### Resultado
+✅ Navbar responsive implementado
 
 ---
 
-## Estructura de rutas relevante
+## Paso 3: Componente Footer
 
-- **`/`** — Landing de producto (componentes en `components/landing/`).
-- **`/demo`**, **`/contacto`** — Demo y contacto.
-- **`/encuesta-farmacias`** — Estudio / encuesta a titulares (módulo aislado; ver `docs/ENCUESTA_FARMACIAS.md`).
-- **`/catalogo`**, **`/catalogo/[codigo]`**, **`/qr/[codigo]`** — Catálogo y acceso por código/QR.
-- **`/checkout`**, **`/pedidos/[id]`** — Flujo de compra y detalle de pedido.
-- **`/login`**, **`/register`**, **`/login-farmacia`**, **`/login-cliente`** — Entradas de sesión según perfil.
-- **`/farmacia/dashboard`**, **`/farmacia/pedidos`**, **`/farmacia/conversaciones`** — Área farmacia.
-- **`/cliente/dashboard`** — Área cliente.
-- **`/asistente`** — Interfaz del asistente.
-- **`/admin`**, **`/admin/farmacias`** — Administración (protegido por middleware + rol admin).
+### Descripción
+Pie de página con enlaces legales e información de contacto.
 
-Las **API** están bajo `app/api/` (productos, pedidos, farmacias, contacto, auth, asistente, etc.).
+### Archivo: `components/common/Footer.tsx`
+```typescript
+import Link from 'next/link'
+import Image from 'next/image'
+
+export function Footer() {
+  return (
+    <footer className="bg-gray-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Logo y descripción */}
+          <div className="col-span-1 md:col-span-2">
+            <Image
+              src="//images/logo/farmafacil-logo.png"
+              alt="FarmaFácil"
+              width={120}
+              height={32}
+              className="h-8 w-auto mb-4 brightness-0 invert"
+            />
+            <p className="text-gray-400 text-sm">
+              FarmaFácil es tu plataforma de confianza para encontrar 
+              y comprar productos de farmacia de forma fácil y segura.
+            </p>
+          </div>
+
+          {/* Enlaces */}
+          <div>
+            <h3 className="font-semibold mb-4">Enlaces</h3>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li>
+                <Link href="/catalogo" className="hover:text-white transition">
+                  Catálogo
+                </Link>
+              </li>
+              <li>
+                <Link href="/contacto" className="hover:text-white transition">
+                  Contacto
+                </Link>
+              </li>
+              <li>
+                <Link href="/login-farmacia" className="hover:text-white transition">
+                  Soy Farmacia
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h3 className="font-semibold mb-4">Legal</h3>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li>
+                <Link href="/privacidad" className="hover:text-white transition">
+                  Política de Privacidad
+                </Link>
+              </li>
+              <li>
+                <Link href="/terminos" className="hover:text-white transition">
+                  Términos y Condiciones
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Copyright */}
+        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
+          <p>© {new Date().getFullYear()} FarmaFácil. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </footer>
+  )
+}
+```
+
+### Resultado
+✅ Footer con enlaces y copyright
 
 ---
 
-## Autenticación y sesiones
+## Paso 4: Navegación responsive
 
-- **Admin (`/admin`)**: Supabase Auth; el **middleware** (`middleware.ts`) exige usuario y `profiles.role === "admin"`.
-- **Farmacia y cliente**: en gran parte del flujo se usa **sesión en `localStorage`** mediante `lib/sessionManager.ts` (`farmacia_session`, `cliente_session`), además de las pantallas de login propias del proyecto.
+### Descripción
+Implementación de navegación adaptable a diferentes tamaños de pantalla.
+
+### Breakpoints utilizados
+| Breakpoint | Ancho | Comportamiento |
+|------------|-------|----------------|
+| `sm` | ≥640px | Menú móvil |
+| `md` | ≥768px | Transición a desktop |
+| `lg` | ≥1024px | Menú desktop completo |
+| `xl` | ≥1280px | Máximo ancho contenedor |
+
+### CSS aplicado
+```css
+/* En globals.css */
+@layer components {
+  .nav-link {
+    @apply text-gray-700 hover:text-[#1ABBB3] transition-colors 
+           font-medium py-2 px-3 rounded-md;
+  }
+
+  .nav-link-active {
+    @apply text-[#1ABBB3] bg-[#1ABBB3]/10;
+  }
+
+  .mobile-menu {
+    @apply fixed inset-0 z-50 bg-white transform transition-transform
+           duration-300 ease-in-out;
+  }
+
+  .mobile-menu-open {
+    @apply translate-x-0;
+  }
+
+  .mobile-menu-closed {
+    @apply translate-x-full;
+  }
+}
+```
+
+### Resultado
+✅ Navegación totalmente responsive
 
 ---
 
-## Assets de marca
+## Paso 5: Metadatos y SEO
 
-- Logo recomendado: **`public/images/logo/farmafacil-logo.png`** (navbar, footer con fallback si no existe el archivo).
+### Descripción
+Configuración de metadatos para SEO y compartir en redes sociales.
+
+### Archivo: `app/layout.tsx` (metadatos)
+```typescript
+export const metadata: Metadata = {
+  title: {
+    default: 'FarmaFácil - Tu farmacia online',
+    template: '%s | FarmaFácil'
+  },
+  description: 'Encuentra y compra productos de farmacia de forma fácil y segura. Amplio catálogo de medicamentos y parafarmacia.',
+  keywords: [
+    'farmacia online',
+    'medicamentos',
+    'parafarmacia',
+    'comprar medicinas',
+    'farmacia 24 horas'
+  ],
+  authors: [{ name: 'FarmaFácil' }],
+  creator: 'FarmaFácil',
+  publisher: 'FarmaFácil',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://farmafacil.com'),
+  openGraph: {
+    title: 'FarmaFácil - Tu farmacia online',
+    description: 'Encuentra y compra productos de farmacia de forma fácil y segura.',
+    url: 'https://farmafacil.com',
+    siteName: 'FarmaFácil',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'FarmaFácil - Tu farmacia online',
+      },
+    ],
+    locale: 'es_ES',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FarmaFácil - Tu farmacia online',
+    description: 'Encuentra y compra productos de farmacia de forma fácil y segura.',
+    images: ['/twitter-image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
+  },
+}
+```
+
+### Metadatos por página
+```typescript
+// Ejemplo: app/catalogo/page.tsx
+export const metadata: Metadata = {
+  title: 'Catálogo de Productos',
+  description: 'Explora nuestro amplio catálogo de productos de farmacia y parafarmacia.',
+}
+```
+
+### Resultado
+✅ SEO optimizado para motores de búsqueda y redes sociales
 
 ---
 
-## Documentación adicional
+## 📁 Archivos Relacionados
 
-- En `public/images/` hay un `README.md` con notas sobre carpetas de imágenes del proyecto.
+| Archivo | Descripción |
+|---------|-------------|
+| `app/layout.tsx` | Layout principal |
+| `components/common/Navbar.tsx` | Barra de navegación |
+| `components/common/Footer.tsx` | Pie de página |
+| `app/globals.css` | Estilos globales |
 
 ---
 
-## Licencia y propiedad
+## ✅ Checklist de Completado
 
-Proyecto **privado** (`"private": true` en `package.json`). Los derechos y la marca corresponden a quien opera el producto (p. ej. ReBoTech Solutions / FarmaFácil según vuestra configuración legal).
+- [x] Layout raíz configurado
+- [x] Navbar implementado
+- [x] Footer implementado
+- [x] Navegación responsive
+- [x] Metadatos SEO configurados
 
-Si ampliáis integraciones (Sheets, Calendly, WhatsApp, etc.), conviene documentar en este README los enlaces y el propósito de cada webhook o servicio para el resto del equipo.
+---
+
+[← Anterior: 1.4 Componentes UI](../1.4_Componentes_UI_Base/README.md) | [Siguiente: Milestone 2 →](../../Milestone_2_Interfaces_Publicas/README.md)
+

@@ -10,7 +10,7 @@
 | Información clara | ✅ | Texto descriptivo |
 | Derecho de acceso | ✅ | Email de contacto |
 | Finalidad específica | ✅ | Texto informativo |
-| Responsable identificado | ✅ | ReboTech Solutions |
+| Responsable identificado | ✅ | FarmaFácil |
 
 ---
 
@@ -46,14 +46,14 @@
 
 ```tsx
 <p className="text-xs text-gray-500">
-  Tus datos serán tratados por <b>ReboTech Solutions</b> con la finalidad
+  Tus datos serán tratados por <b>FarmaFácil</b> con la finalidad
   de gestionar tu solicitud e informarte sobre productos o futuros programas de
   aceleración. Puedes ejercer tus derechos escribiendo a{" "}
   <a
-    href="mailto:rgpd@rebotech.solutions"
+    href="mailto:rgdp@farmafacil.solutions"
     className="text-[#1ABBB3] hover:underline"
   >
-    rgpd@rebotech.solutions
+    rgdp@farmafacil.solutions
   </a>.
 </p>
 ```
@@ -95,7 +95,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 │     ☐ He leído y acepto la política de protección de datos │
 │                                                             │
 │  2. INFORMACIÓN DEL RESPONSABLE                             │
-│     "Tus datos serán tratados por ReboTech Solutions..."   │
+│     "Tus datos serán tratados por FarmaFácil..."   │
 │                                                             │
 │  3. FINALIDAD                                               │
 │     "...con la finalidad de gestionar tu solicitud e       │
@@ -103,7 +103,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 │                                                             │
 │  4. DERECHOS                                                │
 │     "Puedes ejercer tus derechos escribiendo a             │
-│      rgpd@rebotech.solutions"                               │
+│      rgdp@farmafacil.solutions"                               │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -121,7 +121,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 - Nombre: ReboTech Solutions S.L.
 - CIF: B-XXXXXXXX
 - Dirección: Calle Marina de Empresas, 46024 Valencia
-- Email: rgpd@rebotech.solutions
+- Email: contacto@farmafacil.solutions
 
 ## 2. Datos que Recopilamos
 - Nombre y apellidos
@@ -155,7 +155,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 - Limitación del tratamiento
 
 ## 8. Cómo Ejercer tus Derechos
-Escribiendo a: rgpd@rebotech.solutions
+Escribiendo a: rgdp@farmafacil.solutions
 Adjuntando copia del DNI
 
 ## 9. Reclamaciones
@@ -198,7 +198,7 @@ www.aepd.es
 │                           ▼                                 │
 │  4. GESTIÓN DE DERECHOS                                     │
 │     ┌─────────────────────────────────────────────────┐    │
-│     │  Usuario escribe a rgpd@rebotech.solutions      │    │
+│     │  Usuario escribe a rgdp@farmafacil.solutions      │    │
 │     │  → Acceso / Rectificación / Supresión           │    │
 │     └─────────────────────────────────────────────────┘    │
 │                                                             │

@@ -7,7 +7,7 @@ Módulo independiente para el estudio dirigido a titulares/cotitulares de farmac
 | Ruta | Descripción |
 |------|-------------|
 | `/encuesta-farmacias` | Formulario multipaso |
-| `/encuesta-farmacias/condiciones` | Condiciones de participación e incentivo (**revisión jurídica pendiente**) |
+| `/encuesta-farmacias/condiciones` | Condiciones de participación en el estudio (**revisión pendiente**) |
 | `/api/encuesta` | API de envío (servidor) |
 
 Acceso desde la landing: sección «Participar en el estudio» + enlace en el footer.

@@ -221,14 +221,14 @@ export default function ContactoPage() {
                   </div>
 
                   <p className="text-xs text-gray-500">
-                    Tus datos serán tratados por <b>ReboTech Solutions </b> con la finalidad
+                    Tus datos serán tratados por <b>FarmaFácil</b> con la finalidad
                     de gestionar tu solicitud e informarte sobre productos o futuros programas de
                     aceleración. Puedes ejercer tus derechos escribiendo a{" "}
                     <a
-                      href="mailto:rgpd@rebotech.solutions"
+                      href="mailto:rgdp@farmafacil.solutions"
                       className="text-[#1ABBB3] hover:underline"
                     >
-                      rgpd@rebotech.solutions
+                      rgdp@farmafacil.solutions
                     </a>.
                   </p>
 

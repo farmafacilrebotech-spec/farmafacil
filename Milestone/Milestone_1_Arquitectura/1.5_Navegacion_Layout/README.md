@@ -123,7 +123,7 @@ export function Navbar() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
               <Image
-                src="/logo_farmafacil.png"
+                src="//images/logo/farmafacil-logo.png"
                 alt="FarmaFácil"
                 width={150}
                 height={40}
@@ -245,7 +245,7 @@ export function Footer() {
           {/* Logo y descripción */}
           <div className="col-span-1 md:col-span-2">
             <Image
-              src="/logo_farmafacil.png"
+              src="//images/logo/farmafacil-logo.png"
               alt="FarmaFácil"
               width={120}
               height={32}
