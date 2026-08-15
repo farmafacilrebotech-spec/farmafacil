@@ -28,8 +28,8 @@ export const metadata: Metadata = {
     'Reduce colas, automatiza pedidos y mejora la atención con catálogo por QR, kiosko en tienda y asistente. Solicita demo gratuita.',
 
   icons: {
-    icon: '/logo/favicon.png',
-    shortcut: '/logo/favicon.png',
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
     apple: '/logo/apple-touch-icon.png',
   },
 
