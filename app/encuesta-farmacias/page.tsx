@@ -10,7 +10,22 @@ import {
 export const metadata: Metadata = {
   title: "Encuesta farmacias — FarmaFácil",
   description:
-    "Estudio sobre los retos actuales de la farmacia comunitaria. Participación para titulares y cotitulares.",
+    "Estudio sobre los retos actuales de las farmacias para el futuro. Participación para titulares y cotitulares.",
+};
+
+export const metadata: Metadata = {
+  title: "Encuesta farmacias - FarmaFácil",
+  description:
+    "Ayúdanos a conocer mejor la realidad de las farmacias. Participa en 5-7 minutos y recibe un bono Amazon de 10 € tras validar tu participación.",
+  openGraph: {
+    title: "Encuesta farmacias — FarmaFácil",
+    description:
+      "Ayúdanos a conocer mejor la realidad de las farmacias. Participa en 5-7 minutos y recibe un bono Amazon de 10 € tras validar tu participación.",
+    url: "https://farmafacil.solutions/encuesta-farmacias",
+    siteName: "FarmaFácil",
+    locale: "es_ES",
+    type: "website",
+  },
 };
 
 export default function EncuestaFarmaciasPage() {
