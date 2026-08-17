@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Encuesta farmacias — FarmaFácil",
     description:
-      "Ayúdanos a conocer mejor la realidad de las farmacias. Participa en 5-7 minutos y recibe un bono Amazon de 10 € tras validar tu participación.",
+      "Ayúdanos a conocer mejor la realidad de las farmacias. Participa y recibe un bono Amazon de 10 € tras validar tu participación.",
     url: "https://farmafacil.solutions/encuesta-farmacias",
     siteName: "FarmaFácil",
     locale: "es_ES",
