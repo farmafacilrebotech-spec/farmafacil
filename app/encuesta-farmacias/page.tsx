@@ -15,12 +15,31 @@ export const metadata: Metadata = {
     title: "Encuesta farmacias — FarmaFácil",
     description:
       "Ayúdanos a conocer mejor la realidad de las farmacias. Participa y recibe un bono Amazon de 10 € tras validar tu participación.",
-    url: "https://farmafacil.solutions/encuesta-farmacias",
+    url: "https://www.farmafacil.solutions/encuesta-farmacias",
     siteName: "FarmaFácil",
     locale: "es_ES",
     type: "website",
+    images: [
+      {
+        url: "https://www.farmafacil.solutions/images/og/encuesta-farmacias.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Encuesta FarmaFácil para titulares de farmacia",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Encuesta farmacias - FarmaFácil",
+    description:
+      "Ayúdanos a conocer mejor la realidad de las farmacias. Participa y recibe un bono Amazon de 10 € tras validar tu participación.",
+    images: [
+      "https://www.farmafacil.solutions/images/og/encuesta-farmacias.jpg",
+    ],
   },
 };
+
 
 export default function EncuestaFarmaciasPage() {
   const enabled = isEncuestaEnabled();
