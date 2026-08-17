@@ -344,19 +344,18 @@ export default function SurveyWizard({
     return (
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
         <h1 className="text-2xl font-bold tracking-tight text-[#1A1A1A] sm:text-[1.75rem]">
-          Estudio sobre los retos de las farmacias españolas
+         Queremos escuchar a quienes viven la farmacia cada día
         </h1>
         <p className="mt-3 text-lg font-semibold text-[#1ABBB3]">
-          ¿Nos ayudas en solo unos minutos?
+         Tu experiencia nos importa. ¿Nos dedicas unos minutos?
         </p>
         <p className="mt-3 text-gray-600">
-          Queremos conocer los principales retos de las farmacias para desarrollar
-          mejores soluciones para el sector.
+          Queremos conocer de primera mano qué tareas os quitan más tiempo, qué problemas se repiten cada día y qué soluciones podrían ayudar realmente a las farmacias.
         </p>
 
         <div className="mt-5 rounded-2xl border border-[#1ABBB3]/30 bg-gradient-to-br from-[#1ABBB3]/10 to-[#4ED3C2]/10 px-4 py-3.5">
           <p className="text-sm font-semibold text-[#1A1A1A] sm:text-base">
-            Como agradecimiento, recibirás un bono Amazon de 10 € tras validar tu participación.
+          Como agradecimiento por compartir tu experiencia, recibirás un bono Amazon de 10 € tras validar tu participación.
           </p>
         </div>
 
