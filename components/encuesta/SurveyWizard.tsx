@@ -350,7 +350,7 @@ export default function SurveyWizard({
          Tu experiencia nos importa. ¿Nos dedicas unos minutos?
         </p>
         <p className="mt-3 text-gray-600">
-          Queremos conocer de primera mano qué tareas os quitan más tiempo, qué problemas se repiten cada día y qué soluciones podrían ayudar realmente a las farmacias.
+        Cuéntanos de primera mano qué tareas os quitan más tiempo, qué problemas se repiten cada día y qué soluciones podrían ayudar realmente en vuestra farmacia.
         </p>
 
         <div className="mt-5 rounded-2xl border border-[#1ABBB3]/30 bg-gradient-to-br from-[#1ABBB3]/10 to-[#4ED3C2]/10 px-4 py-3.5">
