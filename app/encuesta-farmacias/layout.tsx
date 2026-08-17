@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
     images: [
       {
-        url: '/images/og/encuesta-farmacias.jpg',
+        url: '/images/og/encuesta-farmacias.jpeg',
         width: 1200,
         height: 630,
         alt: 'Encuesta FarmaFácil para titulares y cotitulares de farmacia',
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     description:
       'Tu experiencia nos ayuda a construir soluciones que respondan a la realidad de las farmacias.',
 
-    images: ['/images/og/encuesta-farmacias.jpg'],
+    images: ['/images/og/encuesta-farmacias.jpeg'],
   },
 };
 

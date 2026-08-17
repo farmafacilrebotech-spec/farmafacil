@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://www.farmafacil.solutions/images/og/encuesta-farmacias.jpg",
+        url: "https://www.farmafacil.solutions/images/og/encuesta-farmacias.jpeg",
         width: 1200,
         height: 630,
         alt: "Encuesta FarmaFácil para titulares de farmacia",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     description:
       "Ayúdanos a conocer mejor la realidad de las farmacias. Participa y recibe un bono Amazon de 10 € tras validar tu participación.",
     images: [
-      "https://www.farmafacil.solutions/images/og/encuesta-farmacias.jpg",
+      "https://www.farmafacil.solutions/images/og/encuesta-farmacias.jpeg",
     ],
   },
 };
