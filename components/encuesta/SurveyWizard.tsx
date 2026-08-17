@@ -347,7 +347,7 @@ export default function SurveyWizard({
           Estudio sobre los retos de las farmacias españolas
         </h1>
         <p className="mt-3 text-lg font-semibold text-[#1ABBB3]">
-          ¿Nos ayudas en solo 5 minutos?
+          ¿Nos ayudas en solo unos minutos?
         </p>
         <p className="mt-3 text-gray-600">
           Queremos conocer los principales retos de las farmacias para desarrollar
