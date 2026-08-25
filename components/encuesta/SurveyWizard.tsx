@@ -355,7 +355,7 @@ export default function SurveyWizard({
 
         <div className="mt-5 rounded-2xl border border-[#1ABBB3]/30 bg-gradient-to-br from-[#1ABBB3]/10 to-[#4ED3C2]/10 px-4 py-3.5">
           <p className="text-sm font-semibold text-[#1A1A1A] sm:text-base">
-          Como agradecimiento por compartir tu experiencia, recibirás un bono Amazon de 10 € tras validar tu participación.
+          Como agradecimiento por tu tiempo, recibirás un bono Amazon de 10 € tras validar tu participación.
           </p>
         </div>
 
