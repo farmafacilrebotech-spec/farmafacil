@@ -50,6 +50,7 @@ export default function SurveyWizard({
     id: string;
     comunidad: boolean;
     informe: boolean;
+    bonoDisponible: boolean;
   } | null>(null);
   const startedTracked = useRef(false);
   const submittedRef = useRef(false);
@@ -285,6 +286,8 @@ export default function SurveyWizard({
         id: confirmedId,
         comunidad: Boolean(json.consentimientos?.comunidad),
         informe: Boolean(json.consentimientos?.informe),
+        // Fuente de verdad: valor real de Apps Script (vía API), no el flag del navegador
+        bonoDisponible: json.bonoDisponible === true,
       });
       setPhase("success");
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -313,7 +316,7 @@ export default function SurveyWizard({
         <h2 className="text-2xl font-bold tracking-tight text-[#1A1A1A]">
           ¡Muchas gracias por tu participación!
         </h2>
-        {bonosDisponibles ? (
+        {result.bonoDisponible ? (
           <>
             <p className="mt-4 text-gray-600">
               Hemos recibido correctamente tus respuestas. En los próximos días revisaremos la

@@ -410,54 +410,57 @@ export function buildAdminEmail(params: {
 export function buildParticipantEmail(params: {
   id: string;
   data: SurveyFormData;
-  bonoDisponibleEnEnvio?: boolean;
+  /** Valor real de Apps Script tras el registro (`bonoDisponible`). */
+  bonoDisponible?: boolean;
 }): { subject: string; html: string; text: string } {
-  const { id, data, bonoDisponibleEnEnvio = false } = params;
+  const { id, data, bonoDisponible = false } = params;
   const subject = "Hemos recibido tu participación | Estudio FarmaFácil";
   const replyTo = getEncuestaReplyTo() || "";
   const firstName = data.nombre_titular.trim() || "hola";
 
-  const bonoPromiseHtml = bonoDisponibleEnEnvio
-    ? `<p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 18px;line-height:1.6">
-            Cuando finalicemos la revisión, nos pondremos en contacto contigo. Si la participación resulta válida, enviaremos el bono regalo de Amazon de 10 € a esta misma dirección de correo electrónico.
+  const introHtml = bonoDisponible
+    ? `<h1 style="font-family:Arial,Helvetica,sans-serif;font-size:20px;color:#1A1A1A;margin:0 0 14px">¡Gracias por participar!</h1>
+          <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 18px;line-height:1.6">
+            Hemos recibido correctamente tu participación.
           </p>
-          <div style="background:#E8FFFC;border:1px solid #4ED3C2;border-radius:10px;padding:14px 16px;margin:0 0 22px">
-            <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1A1A;margin:0;line-height:1.5;font-weight:700">
-              Tu participación se ha recibido correctamente. El bono todavía está pendiente de revisión y validación.
-            </p>
-          </div>`
-    : `<p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 18px;line-height:1.6">
-            Cuando finalicemos la revisión, nos pondremos en contacto contigo si necesitamos confirmar algún dato.
-          </p>
-          <div style="background:#E8FFFC;border:1px solid #4ED3C2;border-radius:10px;padding:14px 16px;margin:0 0 22px">
-            <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1A1A;margin:0;line-height:1.5;font-weight:700">
-              Tu participación se ha recibido correctamente. Gracias por ayudarnos con este estudio.
-            </p>
-          </div>`;
-
-  const bonoFooterHtml = bonoDisponibleEnEnvio
-    ? `<p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6b7280;margin:0 0 10px;line-height:1.5">
-            Este correo confirma la recepción de la encuesta, pero no supone la aprobación automática del bono.
+          <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 18px;line-height:1.6">
+            En los próximos días revisaremos la información facilitada. Si tu participación es validada, recibirás un email con las instrucciones para solicitar tu bono Amazon de 10&nbsp;€.
           </p>`
-    : `<p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6b7280;margin:0 0 10px;line-height:1.5">
-            Este correo confirma la recepción de la encuesta.
+    : `<h1 style="font-family:Arial,Helvetica,sans-serif;font-size:20px;color:#1A1A1A;margin:0 0 14px">¡Gracias por participar!</h1>
+          <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 18px;line-height:1.6">
+            Hemos recibido correctamente tu participación.
+          </p>
+          <div style="background:#E8FFFC;border:1px solid #4ED3C2;border-radius:10px;padding:14px 16px;margin:0 0 18px">
+            <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1A1A;margin:0;line-height:1.5;font-weight:700">
+              La promoción de bonos ya no está disponible, por lo que esta participación no está asociada a ningún incentivo.
+            </p>
+          </div>
+          <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 12px;line-height:1.6">
+            Aun así, tu experiencia es muy valiosa para ayudarnos a conocer mejor las necesidades reales de las farmacias.
+          </p>
+          <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 18px;line-height:1.6">
+            Gracias por dedicarnos unos minutos.
           </p>`;
 
-  const bonoPromiseText = bonoDisponibleEnEnvio
+  const introText = bonoDisponible
     ? [
-        "Cuando finalicemos la revisión, nos pondremos en contacto contigo. Si la participación resulta válida, enviaremos el bono regalo de Amazon de 10 € a esta misma dirección de correo electrónico.",
+        "¡Gracias por participar!",
         "",
-        "Tu participación se ha recibido correctamente. El bono todavía está pendiente de revisión y validación.",
+        "Hemos recibido correctamente tu participación.",
+        "",
+        "En los próximos días revisaremos la información facilitada. Si tu participación es validada, recibirás un email con las instrucciones para solicitar tu bono Amazon de 10 €.",
       ]
     : [
-        "Cuando finalicemos la revisión, nos pondremos en contacto contigo si necesitamos confirmar algún dato.",
+        "¡Gracias por participar!",
         "",
-        "Tu participación se ha recibido correctamente. Gracias por ayudarnos con este estudio.",
+        "Hemos recibido correctamente tu participación.",
+        "",
+        "La promoción de bonos ya no está disponible, por lo que esta participación no está asociada a ningún incentivo.",
+        "",
+        "Aun así, tu experiencia es muy valiosa para ayudarnos a conocer mejor las necesidades reales de las farmacias.",
+        "",
+        "Gracias por dedicarnos unos minutos.",
       ];
-
-  const bonoFooterText = bonoDisponibleEnEnvio
-    ? "Este correo confirma la recepción de la encuesta, pero no supone la aprobación automática del bono."
-    : "Este correo confirma la recepción de la encuesta.";
 
   const pharmacyRows: Array<[string, string]> = [
     ["Titular o cotitular", data.nombre_titular],
@@ -524,18 +527,16 @@ export function buildParticipantEmail(params: {
           <p style="font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#1A1A1A;margin:0 0 14px;line-height:1.55">
             Hola, ${escapeHtml(firstName)}:
           </p>
-          <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 12px;line-height:1.6">
-            Gracias por participar en nuestro estudio y dedicar unos minutos a ayudarnos a construir el futuro de las farmacias.
-          </p>
-          <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 12px;line-height:1.6">
-            Hemos recibido correctamente la información correspondiente a <strong>${escapeHtml(
+          ${introHtml}
+          ${
+            data.nombre_farmacia
+              ? `<p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 18px;line-height:1.6">
+            Participación registrada para <strong>${escapeHtml(
               data.nombre_farmacia
             )}</strong>.
-          </p>
-          <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 12px;line-height:1.6">
-            Nuestro equipo revisará los datos facilitados para comprobar que la participación cumple las condiciones del estudio y corresponde a una farmacia real.
-          </p>
-          ${bonoPromiseHtml}
+          </p>`
+              : ""
+          }
 
           <h2 style="font-family:Arial,Helvetica,sans-serif;font-size:17px;color:#1A1A1A;margin:0 0 8px">Resumen de tu participación</h2>
           ${sectionTitleHtml("Datos de la farmacia")}
@@ -552,22 +553,15 @@ export function buildParticipantEmail(params: {
           <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1A1A;margin:24px 0 8px">
             <strong>Referencia de participación:</strong> ${escapeHtml(id)}
           </p>
-          <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#4b5563;margin:0 0 18px;line-height:1.55">
-            No necesitas realizar ninguna otra acción. Contactaremos contigo después de revisar la participación.
-          </p>
 
           <hr style="border:none;border-top:1px solid #e5e7eb;margin:22px 0" />
 
-          <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#374151;margin:0 0 8px;line-height:1.55">
-            Gracias por ayudarnos a conocer mejor la realidad de las farmacias.
-          </p>
           <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1A1A;margin:0 0 2px;font-weight:700">
             Equipo FarmaFácil
           </p>
           <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6b7280;margin:0 0 14px">
             Construyendo la farmacia del futuro
           </p>
-          ${bonoFooterHtml}
           ${
             replyTo
               ? `<p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6b7280;margin:0">
@@ -587,13 +581,11 @@ export function buildParticipantEmail(params: {
   const text = [
     `Hola, ${firstName}:`,
     "",
-    "Gracias por participar en nuestro estudio sobre los retos actuales de la farmacia comunitaria.",
+    ...introText,
     "",
-    `Hemos recibido correctamente la información correspondiente a ${data.nombre_farmacia}.`,
-    "",
-    "Nuestro equipo revisará los datos facilitados para comprobar que la participación cumple las condiciones del estudio y corresponde a una farmacia real.",
-    "",
-    ...bonoPromiseText,
+    data.nombre_farmacia
+      ? `Participación registrada para ${data.nombre_farmacia}.`
+      : "",
     "",
     "Resumen de tu participación",
     "",
@@ -625,13 +617,8 @@ export function buildParticipantEmail(params: {
     "",
     `Referencia de participación: ${id}`,
     "",
-    "No necesitas realizar ninguna otra acción. Contactaremos contigo después de revisar la participación.",
-    "",
-    "Gracias por ayudarnos a conocer mejor la realidad de las farmacias.",
     "Equipo FarmaFácil",
     "Construyendo la farmacia del futuro",
-    "",
-    bonoFooterText,
     replyTo ? `Contacto: ${replyTo}` : "",
   ]
     .filter((line) => line !== undefined)
@@ -748,7 +735,7 @@ export async function sendEncuestaAdminEmail(params: {
 export async function sendEncuestaParticipantEmail(params: {
   id: string;
   data: SurveyFormData;
-  bonoDisponibleEnEnvio?: boolean;
+  bonoDisponible?: boolean;
 }): Promise<EmailSendResult> {
   const missing = getMissingEncuestaEmailEnv();
   if (missing.length) {

@@ -8,7 +8,13 @@ import type { CoherenceResult, SurveyFormData, SurveyEstado } from "./types";
 import type { DuplicateFlags } from "./coherence";
 
 export type AppsScriptSubmitResult =
-  | { ok: true; result?: unknown; duplicateRequest?: boolean }
+  | {
+      ok: true;
+      result?: unknown;
+      duplicateRequest?: boolean;
+      /** Valor real devuelto por Apps Script tras registrar. */
+      bonoDisponible?: boolean;
+    }
   | { ok: false; error: string };
 
 type AppsScriptResponse = {
@@ -17,6 +23,7 @@ type AppsScriptResponse = {
   code?: string;
   duplicateRequest?: boolean;
   error?: string;
+  bonoDisponible?: boolean;
 };
 
 /**
@@ -132,15 +139,23 @@ export async function submitEncuestaToAppsScript(
       };
     }
 
+    const bonoDisponible =
+      typeof responseData.bonoDisponible === "boolean"
+        ? responseData.bonoDisponible
+        : undefined;
+
     console.log("[encuesta] Google Sheets registrado correctamente:", {
       duplicateRequest: responseData.duplicateRequest || false,
       responseId: sheetsPayload["ID Respuesta"],
+      bonoDisponible:
+        typeof bonoDisponible === "boolean" ? bonoDisponible : "(no informado)",
     });
 
     return {
       ok: true,
       result: responseData,
       duplicateRequest: responseData.duplicateRequest || false,
+      ...(typeof bonoDisponible === "boolean" ? { bonoDisponible } : {}),
     };
   } catch (err) {
     console.error("[encuesta] Error de red al contactar con Apps Script:", err);

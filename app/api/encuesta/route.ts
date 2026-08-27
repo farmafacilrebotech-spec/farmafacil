@@ -252,6 +252,19 @@ export async function POST(req: Request) {
       );
     }
 
+    // Fuente de verdad para email/pantalla final: bonoDisponible de Apps Script
+    const bonoDisponibleFromAppsScript =
+      typeof sheetsResult.bonoDisponible === "boolean"
+        ? sheetsResult.bonoDisponible
+        : undefined;
+    if (typeof bonoDisponibleFromAppsScript !== "boolean") {
+      console.warn(
+        "[encuesta] Apps Script no devolvió bonoDisponible booleano; no se asumirá incentivo"
+      );
+    }
+    // Sin valor real → no prometer bono (no inventar estado)
+    const bonoDisponible = bonoDisponibleFromAppsScript === true;
+
     // Solo si Sheets OK → emails (independientes) + éxito
     const adminEmailResult = await sendEncuestaAdminEmail({
       id: responseId,
@@ -282,13 +295,14 @@ export async function POST(req: Request) {
     const participantEmailResult = await sendEncuestaParticipantEmail({
       id: responseId,
       data,
-      bonoDisponibleEnEnvio,
+      bonoDisponible,
     });
     if (participantEmailResult.ok) {
       console.log(
         participantEmailResult.skipped
           ? "[encuesta] Email participante omitido (ya enviado para este ID)"
-          : "[encuesta] Email participante enviado correctamente"
+          : "[encuesta] Email participante enviado correctamente",
+        { bonoDisponible }
       );
     } else {
       console.error(
@@ -314,7 +328,8 @@ export async function POST(req: Request) {
       adminEmailSent: adminEmailResult.ok,
       participantEmailSent: participantEmailResult.ok,
       emailSent: adminEmailResult.ok,
-      bonosDisponibles: bonoDisponibleEnEnvio,
+      bonoDisponible,
+      bonosDisponibles: bonoDisponible,
       bonoDisponibleEnEnvio,
       consentimientos: {
         comunidad: data.consentimiento_comunidad,
