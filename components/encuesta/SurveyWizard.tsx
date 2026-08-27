@@ -227,7 +227,11 @@ export default function SurveyWizard({
       const res = await fetch("/api/encuesta", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, submissionId }),
+        body: JSON.stringify({
+          ...data,
+          submissionId,
+          bonoDisponibleEnEnvio: bonosDisponibles,
+        }),
       });
       const json = await res.json();
 
@@ -318,12 +322,7 @@ export default function SurveyWizard({
             Una vez validada, recibirás automáticamente tu bono regalo de 
             Amazon de 10 € en el email que nos has indicado.
           </p>
-        ) : (
-          <p className="mt-4 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">
-            Tu participación ha quedado registrada. En este momento los bonos regalo pueden estar
-            agotados o pausados; te informaremos si procede.
-          </p>
-        )}
+        ) : null}
         {result.comunidad && (
           <p className="mt-3 text-sm text-gray-600">
             También te enviaremos información para acceder a la comunidad de farmacias impulsada
@@ -353,11 +352,24 @@ export default function SurveyWizard({
         Cuéntanos de primera mano qué tareas os quitan más tiempo, qué problemas se repiten cada día y qué soluciones podrían ayudar realmente en vuestra farmacia.
         </p>
 
-        <div className="mt-5 rounded-2xl border border-[#1ABBB3]/30 bg-gradient-to-br from-[#1ABBB3]/10 to-[#4ED3C2]/10 px-4 py-3.5">
-          <p className="text-sm font-semibold text-[#1A1A1A] sm:text-base">
-          Como agradecimiento por tu tiempo, recibirás un bono Amazon de 10 € tras validar tu participación.
-          </p>
-        </div>
+        {bonosDisponibles ? (
+          <div className="mt-5 rounded-2xl border border-[#1ABBB3]/30 bg-gradient-to-br from-[#1ABBB3]/10 to-[#4ED3C2]/10 px-4 py-3.5">
+            <p className="text-sm font-semibold text-[#1A1A1A] sm:text-base">
+            Como agradecimiento por tu tiempo, recibirás un bono Amazon de 10 € tras validar tu participación.
+            </p>
+          </div>
+        ) : (
+          <div className="mt-5 rounded-2xl border border-[#1ABBB3]/30 bg-gradient-to-br from-[#1ABBB3]/10 to-[#4ED3C2]/10 px-4 py-3.5">
+            <p className="text-sm font-semibold text-[#1A1A1A] sm:text-base">
+              La promoción del bono ha finalizado
+            </p>
+            <p className="mt-2 text-sm text-gray-700">
+              Si quieres, puedes seguir participando en el estudio. Tu experiencia sigue siendo
+              muy valiosa para ayudarnos a conocer mejor las necesidades reales de las
+              farmacias.
+            </p>
+          </div>
+        )}
 
         <ul className="mt-5 grid gap-2 text-sm text-gray-600 sm:grid-cols-3">
           <li className="rounded-xl bg-[#F7F9FA] px-3 py-2.5">
@@ -369,23 +381,20 @@ export default function SurveyWizard({
           <li className="rounded-xl bg-[#F7F9FA] px-3 py-2.5">Una participación por farmacia.</li>
         </ul>
 
-        {!bonosDisponibles && (
-          <p className="mt-4 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900">
-            Los bonos regalo pueden estar temporalmente agotados. Aun así puedes participar en el
-            estudio y recibir un bono regalo de 10 € si vuelven a estar disponibles. si tu participación es válida.
-          </p>
-        )}
-
         <Button
           type="button"
           onClick={start}
           className="mt-6 h-12 w-full rounded-full bg-[#1ABBB3] text-base font-semibold text-white hover:bg-[#159a94] sm:w-auto sm:px-10"
         >
-          Empezar encuesta
+          {bonosDisponibles ? "Empezar encuesta" : "Continuar con la encuesta"}
         </Button>
 
         <p className="mt-4 text-center text-xs leading-relaxed text-gray-500 sm:text-left">
-          El bono se enviará tras verificar los datos.{" "}
+          {bonosDisponibles ? (
+            <>
+              El bono se enviará tras verificar los datos.{" "}
+            </>
+          ) : null}
           <Link
             href="/encuesta-farmacias/condiciones"
             className="text-[#1ABBB3] underline underline-offset-2 hover:text-[#159a94]"
@@ -442,7 +451,14 @@ export default function SurveyWizard({
       {step === 3 && <StepPedidos data={data} errors={errors} update={update} />}
       {step === 4 && <StepVenta data={data} errors={errors} update={update} />}
       {step === 5 && <StepPrioridades data={data} errors={errors} update={update} />}
-      {step === 6 && <StepSoluciones data={data} errors={errors} update={update} />}
+      {step === 6 && (
+        <StepSoluciones
+          data={data}
+          errors={errors}
+          update={update}
+          bonosDisponibles={bonosDisponibles}
+        />
+      )}
       {step === 7 && <StepComercial data={data} errors={errors} update={update} />}
 
       {showStepAlert && Object.keys(errors).length > 0 && (

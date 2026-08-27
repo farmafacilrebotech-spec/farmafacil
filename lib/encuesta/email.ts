@@ -162,8 +162,16 @@ export function buildAdminEmail(params: {
   coherence: CoherenceResult;
   estado: string;
   duplicatePotential: boolean;
+  bonoDisponibleEnEnvio?: boolean;
 }): { subject: string; html: string; text: string } {
-  const { id, data, coherence, estado, duplicatePotential } = params;
+  const {
+    id,
+    data,
+    coherence,
+    estado,
+    duplicatePotential,
+    bonoDisponibleEnEnvio = false,
+  } = params;
   const subject = `Encuesta - Farmacia ${data.nombre_farmacia}`;
   const when = madridDateTime();
   const adminUrl = getSheetsAdminUrl();
@@ -294,6 +302,7 @@ export function buildAdminEmail(params: {
     ["Posibles duplicados", yesNo(duplicatePotential)],
     ["Estado inicial de revisión", estado],
     ["Estado inicial del bono", "no_revisado"],
+    ["Bono disponible en el envío", yesNo(bonoDisponibleEnEnvio)],
   ];
 
   const html = `<!DOCTYPE html>
@@ -387,7 +396,8 @@ export function buildAdminEmail(params: {
     `Alertas: ${coherence.alerts.join(" | ") || "Ninguna"}`,
     `Posibles duplicados: ${yesNo(duplicatePotential)}`,
     `Estado revisión: ${estado}`,
-    "Estado bono: no_revisado",
+    `Estado bono: no_revisado`,
+    `Bono disponible en el envío: ${yesNo(bonoDisponibleEnEnvio)}`,
   ].join("\n");
 
   return { subject, html, text };
@@ -400,11 +410,54 @@ export function buildAdminEmail(params: {
 export function buildParticipantEmail(params: {
   id: string;
   data: SurveyFormData;
+  bonoDisponibleEnEnvio?: boolean;
 }): { subject: string; html: string; text: string } {
-  const { id, data } = params;
+  const { id, data, bonoDisponibleEnEnvio = false } = params;
   const subject = "Hemos recibido tu participación | Estudio FarmaFácil";
   const replyTo = getEncuestaReplyTo() || "";
   const firstName = data.nombre_titular.trim() || "hola";
+
+  const bonoPromiseHtml = bonoDisponibleEnEnvio
+    ? `<p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 18px;line-height:1.6">
+            Cuando finalicemos la revisión, nos pondremos en contacto contigo. Si la participación resulta válida, enviaremos el bono regalo de Amazon de 10 € a esta misma dirección de correo electrónico.
+          </p>
+          <div style="background:#E8FFFC;border:1px solid #4ED3C2;border-radius:10px;padding:14px 16px;margin:0 0 22px">
+            <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1A1A;margin:0;line-height:1.5;font-weight:700">
+              Tu participación se ha recibido correctamente. El bono todavía está pendiente de revisión y validación.
+            </p>
+          </div>`
+    : `<p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 18px;line-height:1.6">
+            Cuando finalicemos la revisión, nos pondremos en contacto contigo si necesitamos confirmar algún dato.
+          </p>
+          <div style="background:#E8FFFC;border:1px solid #4ED3C2;border-radius:10px;padding:14px 16px;margin:0 0 22px">
+            <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1A1A;margin:0;line-height:1.5;font-weight:700">
+              Tu participación se ha recibido correctamente. Gracias por ayudarnos con este estudio.
+            </p>
+          </div>`;
+
+  const bonoFooterHtml = bonoDisponibleEnEnvio
+    ? `<p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6b7280;margin:0 0 10px;line-height:1.5">
+            Este correo confirma la recepción de la encuesta, pero no supone la aprobación automática del bono.
+          </p>`
+    : `<p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6b7280;margin:0 0 10px;line-height:1.5">
+            Este correo confirma la recepción de la encuesta.
+          </p>`;
+
+  const bonoPromiseText = bonoDisponibleEnEnvio
+    ? [
+        "Cuando finalicemos la revisión, nos pondremos en contacto contigo. Si la participación resulta válida, enviaremos el bono regalo de Amazon de 10 € a esta misma dirección de correo electrónico.",
+        "",
+        "Tu participación se ha recibido correctamente. El bono todavía está pendiente de revisión y validación.",
+      ]
+    : [
+        "Cuando finalicemos la revisión, nos pondremos en contacto contigo si necesitamos confirmar algún dato.",
+        "",
+        "Tu participación se ha recibido correctamente. Gracias por ayudarnos con este estudio.",
+      ];
+
+  const bonoFooterText = bonoDisponibleEnEnvio
+    ? "Este correo confirma la recepción de la encuesta, pero no supone la aprobación automática del bono."
+    : "Este correo confirma la recepción de la encuesta.";
 
   const pharmacyRows: Array<[string, string]> = [
     ["Titular o cotitular", data.nombre_titular],
@@ -482,15 +535,7 @@ export function buildParticipantEmail(params: {
           <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 12px;line-height:1.6">
             Nuestro equipo revisará los datos facilitados para comprobar que la participación cumple las condiciones del estudio y corresponde a una farmacia real.
           </p>
-          <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#374151;margin:0 0 18px;line-height:1.6">
-            Cuando finalicemos la revisión, nos pondremos en contacto contigo. Si la participación resulta válida, enviaremos el bono regalo de Amazon de 10 € a esta misma dirección de correo electrónico.
-          </p>
-
-          <div style="background:#E8FFFC;border:1px solid #4ED3C2;border-radius:10px;padding:14px 16px;margin:0 0 22px">
-            <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1A1A;margin:0;line-height:1.5;font-weight:700">
-              Tu participación se ha recibido correctamente. El bono todavía está pendiente de revisión y validación.
-            </p>
-          </div>
+          ${bonoPromiseHtml}
 
           <h2 style="font-family:Arial,Helvetica,sans-serif;font-size:17px;color:#1A1A1A;margin:0 0 8px">Resumen de tu participación</h2>
           ${sectionTitleHtml("Datos de la farmacia")}
@@ -522,9 +567,7 @@ export function buildParticipantEmail(params: {
           <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6b7280;margin:0 0 14px">
             Construyendo la farmacia del futuro
           </p>
-          <p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6b7280;margin:0 0 10px;line-height:1.5">
-            Este correo confirma la recepción de la encuesta, pero no supone la aprobación automática del bono.
-          </p>
+          ${bonoFooterHtml}
           ${
             replyTo
               ? `<p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6b7280;margin:0">
@@ -550,9 +593,7 @@ export function buildParticipantEmail(params: {
     "",
     "Nuestro equipo revisará los datos facilitados para comprobar que la participación cumple las condiciones del estudio y corresponde a una farmacia real.",
     "",
-    "Cuando finalicemos la revisión, nos pondremos en contacto contigo. Si la participación resulta válida, enviaremos el bono regalo de Amazon de 10 € a esta misma dirección de correo electrónico.",
-    "",
-    "Tu participación se ha recibido correctamente. El bono todavía está pendiente de revisión y validación.",
+    ...bonoPromiseText,
     "",
     "Resumen de tu participación",
     "",
@@ -590,7 +631,7 @@ export function buildParticipantEmail(params: {
     "Equipo FarmaFácil",
     "Construyendo la farmacia del futuro",
     "",
-    "Este correo confirma la recepción de la encuesta, pero no supone la aprobación automática del bono.",
+    bonoFooterText,
     replyTo ? `Contacto: ${replyTo}` : "",
   ]
     .filter((line) => line !== undefined)
@@ -675,6 +716,7 @@ export async function sendEncuestaAdminEmail(params: {
   coherence: CoherenceResult;
   estado: string;
   duplicatePotential: boolean;
+  bonoDisponibleEnEnvio?: boolean;
 }): Promise<EmailSendResult> {
   const missing = getMissingEncuestaEmailEnv();
   if (missing.length) {
@@ -706,6 +748,7 @@ export async function sendEncuestaAdminEmail(params: {
 export async function sendEncuestaParticipantEmail(params: {
   id: string;
   data: SurveyFormData;
+  bonoDisponibleEnEnvio?: boolean;
 }): Promise<EmailSendResult> {
   const missing = getMissingEncuestaEmailEnv();
   if (missing.length) {

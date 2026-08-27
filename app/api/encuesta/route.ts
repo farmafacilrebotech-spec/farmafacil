@@ -3,7 +3,6 @@ export const dynamic = "force-dynamic";
 import { createHash, createHmac, randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import {
-  areBonosDisponibles,
   isEncuestaEnabled,
 } from "@/lib/encuesta/config";
 import {
@@ -139,14 +138,22 @@ export async function POST(req: Request) {
       submissionId?: string;
       responseId?: string;
       idRespuesta?: string;
+      bonoDisponibleEnEnvio?: boolean;
     };
 
     const {
       submissionId: bodySubmissionId,
       responseId: bodyResponseId,
       idRespuesta: bodyIdRespuesta,
+      bonoDisponibleEnEnvio: bodyBonoDisponibleEnEnvio,
       ...surveyFields
     } = body;
+
+    // Valor capturado en el cliente al cargar/enviar (no recalcular después)
+    const bonoDisponibleEnEnvio =
+      typeof bodyBonoDisponibleEnEnvio === "boolean"
+        ? bodyBonoDisponibleEnEnvio
+        : false;
 
     const data = normalizePayload(surveyFields as SurveyFormData);
 
@@ -221,10 +228,13 @@ export async function POST(req: Request) {
       emailError: "",
       ipHash,
       durationSeconds,
+      bonoDisponibleEnEnvio,
     });
 
     // POST a Apps Script (añade "ID Respuesta" + secret)
-    const sheetsResult = await submitEncuestaToAppsScript(sheetRecord, responseId);
+    const sheetsResult = await submitEncuestaToAppsScript(sheetRecord, responseId, {
+      bonoDisponibleEnEnvio,
+    });
 
     // Si falla Sheets: error y permitir reintento (mismo submissionId)
     if (!sheetsResult.ok) {
@@ -249,6 +259,7 @@ export async function POST(req: Request) {
       coherence,
       estado,
       duplicatePotential,
+      bonoDisponibleEnEnvio,
     });
     if (adminEmailResult.ok) {
       console.log(
@@ -271,6 +282,7 @@ export async function POST(req: Request) {
     const participantEmailResult = await sendEncuestaParticipantEmail({
       id: responseId,
       data,
+      bonoDisponibleEnEnvio,
     });
     if (participantEmailResult.ok) {
       console.log(
@@ -302,7 +314,8 @@ export async function POST(req: Request) {
       adminEmailSent: adminEmailResult.ok,
       participantEmailSent: participantEmailResult.ok,
       emailSent: adminEmailResult.ok,
-      bonosDisponibles: areBonosDisponibles(),
+      bonosDisponibles: bonoDisponibleEnEnvio,
+      bonoDisponibleEnEnvio,
       consentimientos: {
         comunidad: data.consentimiento_comunidad,
         informe: data.consentimiento_informe,

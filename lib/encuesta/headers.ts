@@ -67,6 +67,7 @@ export const EXPECTED_SHEET_HEADERS = [
   "Consentimiento Comercial",
   "Consentimiento Informe",
   "Aceptación Privacidad",
+  "Bono Disponible En Envío",
   "Resultado Revisión",
   "Duplicado Potencial",
   "Hash IP",
@@ -121,9 +122,12 @@ export function buildSheetRecord(params: {
   /** @deprecated usar ipHash */
   originHash?: string;
   durationSeconds?: number;
+  /** Valor de bonosDisponibles en el momento de carga/envío de la encuesta. */
+  bonoDisponibleEnEnvio?: boolean;
 }): SheetRecord {
   const { id, data, estado, coherence, duplicatePotential, durationSeconds } = params;
   const ipHash = params.ipHash || params.originHash || "";
+  const bonoDisponibleEnEnvio = Boolean(params.bonoDisponibleEnEnvio);
   const { fecha, hora } = madridNowParts();
 
   const programa =
@@ -201,6 +205,8 @@ export function buildSheetRecord(params: {
     "Consentimiento Comercial": yesNo(data.consentimiento_comercial),
     "Consentimiento Informe": yesNo(data.consentimiento_informe),
     "Aceptación Privacidad": yesNo(data.aceptacion_privacidad),
+
+    "Bono Disponible En Envío": yesNo(bonoDisponibleEnEnvio),
 
     "Resultado Revisión": coherence.classification,
     "Duplicado Potencial": yesNo(duplicatePotential),

@@ -4,6 +4,13 @@ export function isEncuestaEnabled(): boolean {
   return flag === "true" || flag === "1";
 }
 
+/**
+ * Indica si el incentivo (bono) está disponible para mostrar/prometer.
+ * Independiente de ENCUESTA_ENABLED: la encuesta puede seguir abierta sin bono.
+ *
+ * Desactivar con ENCUESTA_BONOS_DISPONIBLES=false (p. ej. BONO_ACTIVO=NO o
+ * cupo MAXIMO_BONOS agotado, gestionado operativamente).
+ */
 export function areBonosDisponibles(): boolean {
   const flag = process.env.ENCUESTA_BONOS_DISPONIBLES;
   if (flag === undefined || flag === "") return true;

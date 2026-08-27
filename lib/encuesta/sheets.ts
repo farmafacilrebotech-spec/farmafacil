@@ -25,7 +25,8 @@ type AppsScriptResponse = {
  */
 export async function submitEncuestaToAppsScript(
   record: SheetRecord,
-  responseId: string
+  responseId: string,
+  options?: { bonoDisponibleEnEnvio?: boolean }
 ): Promise<AppsScriptSubmitResult> {
   const appsScriptUrl = process.env.GOOGLE_SHEETS_ENCUESTAS_URL;
   const googleSheetsSecret = process.env.GOOGLE_SHEETS_SECRET;
@@ -37,9 +38,16 @@ export async function submitEncuestaToAppsScript(
     return { ok: false, error: "Falta GOOGLE_SHEETS_SECRET" };
   }
 
+  const bonoDisponibleEnEnvio =
+    typeof options?.bonoDisponibleEnEnvio === "boolean"
+      ? options.bonoDisponibleEnEnvio
+      : record["Bono Disponible En Envío"] === "Sí";
+
   const sheetsPayload: Record<string, string | number | string[] | boolean> = {
     ...record,
     "ID Respuesta": responseId || String(record["ID Respuesta"] || ""),
+    // Campo explícito para Apps Script (además del encabezado de hoja)
+    bonoDisponibleEnEnvio,
     secret: googleSheetsSecret,
   };
 
@@ -53,7 +61,9 @@ export async function submitEncuestaToAppsScript(
 
   // Chequeo temporal: solo nombres de claves (nunca valores)
   const missingExpectedHeaders = findMissingSheetHeaders(payloadKeys);
-  const unexpectedPayloadKeys = findUnexpectedSheetKeys(payloadKeys);
+  const unexpectedPayloadKeys = findUnexpectedSheetKeys(payloadKeys).filter(
+    (key) => key !== "bonoDisponibleEnEnvio"
+  );
   console.log("[encuesta] Chequeo claves Sheets:", {
     missingExpectedHeaders,
     unexpectedPayloadKeys,
@@ -151,6 +161,7 @@ export function buildEncuestaSheetPayload(params: {
   ipHash?: string;
   originHash?: string;
   durationSeconds?: number;
+  bonoDisponibleEnEnvio?: boolean;
 }): SheetRecord {
   return buildSheetRecord(params);
 }

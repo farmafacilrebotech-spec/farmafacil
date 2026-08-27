@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { areBonosDisponibles } from "@/lib/encuesta/config";
 
 export default function SurveyCtaSection() {
+  const bonosDisponibles = areBonosDisponibles();
+
   return (
     <section
       id="estudio-farmacias"
@@ -17,8 +20,9 @@ export default function SurveyCtaSection() {
               Ayúdanos a entender los retos reales de la farmacia
             </h2>
             <p className="mt-2 text-gray-600">
-              Encuesta breve para titulares y cotitulares. Las participaciones válidas y
-              verificadas pueden recibir un bono Amazon de 10 € tras revisión.
+              {bonosDisponibles
+                ? "Encuesta breve para titulares y cotitulares. Las participaciones válidas y verificadas pueden recibir un bono Amazon de 10 € tras revisión."
+                : "Encuesta breve para titulares y cotitulares. Tu experiencia nos ayuda a conocer mejor las necesidades reales de las farmacias."}
             </p>
           </div>
           <Button

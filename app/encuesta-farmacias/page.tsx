@@ -7,39 +7,44 @@ import {
   isEncuestaEnabled,
 } from "@/lib/encuesta/config";
 
-export const metadata: Metadata = {
-  title: "Encuesta farmacias - FarmaFácil",
-  description:
-    "Ayúdanos a conocer mejor la realidad de las farmacias. Participa y recibe un bono Amazon de 10 € tras validar tu participación.",
-  openGraph: {
-    title: "Encuesta farmacias — FarmaFácil",
-    description:
-      "Ayúdanos a conocer mejor la realidad de las farmacias. Participa y recibe un bono Amazon de 10 € tras validar tu participación.",
-    url: "https://www.farmafacil.solutions/encuesta-farmacias",
-    siteName: "FarmaFácil",
-    locale: "es_ES",
-    type: "website",
-    images: [
-      {
-        url: "https://www.farmafacil.solutions/images/og/encuesta-farmacias.jpeg",
-        width: 1200,
-        height: 630,
-        alt: "Encuesta FarmaFácil para titulares de farmacia",
-      },
-    ],
-  },
+const DESCRIPTION_CON_BONO =
+  "Ayúdanos a conocer mejor la realidad de las farmacias. Participa y recibe un bono Amazon de 10 € tras validar tu participación.";
+const DESCRIPTION_SIN_BONO =
+  "Ayúdanos a conocer mejor la realidad de las farmacias. Participa en el estudio y comparte tu experiencia.";
 
-  twitter: {
-    card: "summary_large_image",
+export function generateMetadata(): Metadata {
+  const bonosDisponibles = areBonosDisponibles();
+  const description = bonosDisponibles ? DESCRIPTION_CON_BONO : DESCRIPTION_SIN_BONO;
+
+  return {
     title: "Encuesta farmacias - FarmaFácil",
-    description:
-      "Ayúdanos a conocer mejor la realidad de las farmacias. Participa y recibe un bono Amazon de 10 € tras validar tu participación.",
-    images: [
-      "https://www.farmafacil.solutions/images/og/encuesta-farmacias.jpeg",
-    ],
-  },
-};
-
+    description,
+    openGraph: {
+      title: "Encuesta farmacias — FarmaFácil",
+      description,
+      url: "https://www.farmafacil.solutions/encuesta-farmacias",
+      siteName: "FarmaFácil",
+      locale: "es_ES",
+      type: "website",
+      images: [
+        {
+          url: "https://www.farmafacil.solutions/images/og/encuesta-farmacias.jpeg",
+          width: 1200,
+          height: 630,
+          alt: "Encuesta FarmaFácil para titulares de farmacia",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Encuesta farmacias - FarmaFácil",
+      description,
+      images: [
+        "https://www.farmafacil.solutions/images/og/encuesta-farmacias.jpeg",
+      ],
+    },
+  };
+}
 
 export default function EncuestaFarmaciasPage() {
   const enabled = isEncuestaEnabled();

@@ -780,7 +780,12 @@ export function StepComercial({ data, errors, update }: Props) {
   );
 }
 
-export function StepSoluciones({ data, errors, update }: Props) {
+export function StepSoluciones({
+  data,
+  errors,
+  update,
+  bonosDisponibles = true,
+}: Props & { bonosDisponibles?: boolean }) {
   return (
     <div className="space-y-5">
       <p className="rounded-xl bg-[#F7F9FA] p-3 text-sm text-gray-600">
@@ -893,7 +898,9 @@ export function StepSoluciones({ data, errors, update }: Props) {
           <span>Quiero recibir los resultados o el informe elaborado a partir de este estudio.</span>
         </label>
         <p className="text-xs text-gray-500">
-          Estos consentimientos son voluntarios y no son condición para recibir el bono.
+          {bonosDisponibles
+            ? "Estos consentimientos son voluntarios y no son condición para recibir el bono."
+            : "Estos consentimientos son voluntarios y no condicionan tu participación en el estudio."}
         </p>
       </div>
 
@@ -937,8 +944,9 @@ export function StepSoluciones({ data, errors, update }: Props) {
       <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
         <p className="font-semibold">Antes de enviar</p>
         <p className="mt-1">
-          Revisa que tus datos de contacto y de la farmacia sean correctos. El bono de Amazon de
-          10 € solo se enviará tras validación manual de FarmaFácil.
+          {bonosDisponibles
+            ? "Revisa que tus datos de contacto y de la farmacia sean correctos. El bono de Amazon de 10 € solo se enviará tras validación manual de FarmaFácil."
+            : "Revisa que tus datos de contacto y de la farmacia sean correctos antes de enviar tu participación."}
         </p>
       </div>
     </div>
