@@ -311,18 +311,34 @@ export default function SurveyWizard({
     return (
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-10">
         <h2 className="text-2xl font-bold tracking-tight text-[#1A1A1A]">
-        ¡Muchas gracias por tu participación!
+          ¡Muchas gracias por tu participación!
         </h2>
-        <p className="mt-4 text-gray-600">
-          Hemos recibido tu participación. 
-          En los próximos días revisaremos la información para confirmar que cumple las condiciones del estudio.
-        </p>
         {bonosDisponibles ? (
-          <p className="mt-4 rounded-xl bg-[#1ABBB3]/10 p-4 text-sm text-[#1A1A1A]">
-            Una vez validada, recibirás automáticamente tu bono regalo de 
-            Amazon de 10 € en el email que nos has indicado.
-          </p>
-        ) : null}
+          <>
+            <p className="mt-4 text-gray-600">
+              Hemos recibido correctamente tus respuestas. En los próximos días revisaremos la
+              información para confirmar que cumple las condiciones del estudio.
+            </p>
+            <p className="mt-4 rounded-xl bg-[#1ABBB3]/10 p-4 text-sm text-[#1A1A1A]">
+              Si tu participación es validada, recibirás un email con las instrucciones para
+              solicitar tu bono Amazon de 10 €.
+            </p>
+            <p className="mt-3 text-sm text-gray-500">
+              Dispondrás de un plazo limitado para solicitarlo, así que revisa el correo que nos
+              has indicado.
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="mt-4 text-gray-600">
+              Hemos recibido correctamente tus respuestas.
+            </p>
+            <p className="mt-4 rounded-xl bg-[#1ABBB3]/10 p-4 text-sm text-[#1A1A1A]">
+              La promoción de bonos ya no está disponible, pero tu participación sigue siendo muy
+              valiosa y nos ayudará a conocer mejor las necesidades reales de las farmacias.
+            </p>
+          </>
+        )}
         {result.comunidad && (
           <p className="mt-3 text-sm text-gray-600">
             También te enviaremos información para acceder a la comunidad de farmacias impulsada
