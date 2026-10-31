@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -361,6 +362,14 @@ export default function SurveyWizard({
   if (phase === "intro") {
     return (
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
+        <Image
+          src="/images/ilustraciones/encuesta-farmacias.png"
+          alt="Ilustración conceptual del estudio FarmaFácil para farmacias."
+          width={900}
+          height={900}
+          sizes="(min-width: 640px) 15rem, 12rem"
+          className="mx-auto mb-5 h-auto w-48 object-contain sm:mb-6 sm:w-56"
+        />
         <h1 className="text-2xl font-bold tracking-tight text-[#1A1A1A] sm:text-[1.75rem]">
          Queremos escuchar a quienes viven la farmacia cada día
         </h1>

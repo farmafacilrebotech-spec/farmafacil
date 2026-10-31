@@ -11,6 +11,7 @@ import {
   getClienteSession, 
   clearSession 
 } from "@/lib/sessionManager";
+import { FARMAFACIL_APP_URL } from "@/lib/constants";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -93,10 +94,10 @@ export default function Navbar() {
               Inicio
             </Link>
             <Link
-              href="/catalogo"
+              href="/soluciones"
               className="text-gray-700 hover:text-[#1ABBB3] transition-colors font-medium"
             >
-              Catálogo
+              Soluciones y planes
             </Link>
             <Link
               href="/contacto"
@@ -128,11 +129,15 @@ export default function Navbar() {
                 </Button>
               </div>
             ) : (
-              <Link href="/dashboard">
+              <a
+                href={FARMAFACIL_APP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button className="bg-[#1ABBB3] hover:bg-[#4ED3C2] text-white rounded-full px-6">
                   Acceder
                 </Button>
-              </Link>
+              </a>
             )}
           </div>
 
@@ -156,11 +161,11 @@ export default function Navbar() {
               Inicio
             </Link>
             <Link
-              href="/catalogo"
+              href="/soluciones"
               className="block py-2 text-gray-700 hover:text-[#1ABBB3]"
               onClick={() => setIsOpen(false)}
             >
-              Catálogo
+              Soluciones y planes
             </Link>
             <Link
               href="/contacto"
@@ -189,15 +194,17 @@ export default function Navbar() {
                 </button>
               </>
             ) : (
-              <Link
-                href="/dashboard"
+              <a
+                href={FARMAFACIL_APP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="block py-2"
                 onClick={() => setIsOpen(false)}
               >
                 <Button className="w-full bg-[#1ABBB3] hover:bg-[#4ED3C2] text-white rounded-full">
                   Acceder
                 </Button>
-              </Link>
+              </a>
             )}
           </div>
         </div>

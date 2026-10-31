@@ -9,7 +9,7 @@ export default function FooterLogo() {
 
   if (error) {
     return (
-      <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#4ED3C2] to-[#1ABBB3]">
+      <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#4ED3C2] to-[#1ABBB3]">
         <Pill className="h-10 w-10 text-white" aria-hidden />
       </div>
     );
@@ -17,7 +17,7 @@ export default function FooterLogo() {
 
   return (
     <Image
-      src="/images/logo/farmafacil-logo.png"
+      src="/images/logo/farmafacil-emblema-circular.png"
       alt="FarmaFácil"
       width={80}
       height={80}

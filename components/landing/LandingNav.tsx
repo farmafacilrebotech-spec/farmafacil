@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Menu, X, Pill } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { FARMAFACIL_DEMO_URL } from "@/lib/constants";
+import { FARMAFACIL_APP_URL, FARMAFACIL_DEMO_URL } from "@/lib/constants";
 
 const navItems = [
   { href: "#problema", label: "Retos" },
@@ -59,6 +59,12 @@ export default function LandingNav({ className }: { className?: string }) {
             </a>
           ))}
           <Link
+            href="/soluciones"
+            className="rounded-full px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-[#F7F9FA] hover:text-[#1ABBB3]"
+          >
+            Soluciones y planes
+          </Link>
+          <Link
             href="/contacto"
             className="rounded-full px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-[#F7F9FA] hover:text-[#1ABBB3]"
           >
@@ -67,9 +73,14 @@ export default function LandingNav({ className }: { className?: string }) {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link href="/login" className="hidden text-sm font-medium text-gray-500 hover:text-[#1ABBB3] sm:block">
+          <a
+            href={FARMAFACIL_APP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden text-sm font-medium text-gray-500 hover:text-[#1ABBB3] sm:block"
+          >
             Acceder
-          </Link>
+          </a>
           <Button
             asChild
             variant="outline"
@@ -114,19 +125,28 @@ export default function LandingNav({ className }: { className?: string }) {
               </a>
             ))}
             <Link
+              href="/soluciones"
+              className="rounded-lg px-3 py-3 text-base font-medium text-gray-800"
+              onClick={() => setOpen(false)}
+            >
+              Soluciones y planes
+            </Link>
+            <Link
               href="/contacto"
               className="rounded-lg px-3 py-3 text-base font-medium text-gray-800"
               onClick={() => setOpen(false)}
             >
               Contacto
             </Link>
-            <Link
-              href="/login"
+            <a
+              href={FARMAFACIL_APP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="rounded-lg px-3 py-3 text-base font-medium text-gray-500"
               onClick={() => setOpen(false)}
             >
               Acceder
-            </Link>
+            </a>
             <Button
               asChild
               variant="outline"

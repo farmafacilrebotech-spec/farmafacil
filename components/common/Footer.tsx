@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import FooterLogo from "@/components/common/FooterLogo";
-import { FARMAFACIL_DEMO_URL } from "@/lib/constants";
+import {
+  FARMAFACIL_APP_URL,
+  FARMAFACIL_CONTACT_EMAIL,
+  FARMAFACIL_DEMO_URL,
+  FARMAFACIL_PHONE_DISPLAY,
+  FARMAFACIL_WHATSAPP_URL,
+} from "@/lib/constants";
 
 export default function Footer() {
   return (
@@ -32,10 +38,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/catalogo"
+                  href="/soluciones"
                   className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
                 >
-                  Catálogo
+                  Soluciones y planes
                 </Link>
               </li>
               <li>
@@ -66,6 +72,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/contacto/pilar"
+                  className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
+                >
+                  Tarjeta de contacto
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/#solicitar-demo"
                   className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
                 >
@@ -73,12 +87,14 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/login"
+                <a
+                  href={FARMAFACIL_APP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
                 >
                   Acceder
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -118,11 +134,11 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center space-x-2 text-gray-400 text-sm">
                 <Mail className="h-4 w-4" />
-                <span>contacto@farmafacil.solutions</span>
+                <span>{FARMAFACIL_CONTACT_EMAIL}</span>
               </li>
               <li className="flex items-center space-x-2 text-gray-400 text-sm">
                 <Phone className="h-4 w-4" />
-                <span>+34 647 734 564</span>
+                <span>{FARMAFACIL_PHONE_DISPLAY}</span>
               </li>
               <li className="flex items-center space-x-2 text-gray-400 text-sm">
                 <MapPin className="h-4 w-4" />
@@ -130,7 +146,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://wa.me/34647734564"
+                  href={FARMAFACIL_WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center space-x-2 text-[#4ED3C2] hover:text-[#1ABBB3] transition-colors text-sm"
@@ -145,8 +161,8 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} ReBoTech Solutions - FarmaFácil. Todos
-            los derechos reservados.
+            © {new Date().getFullYear()} FarmaFácil. Todos los derechos
+            reservados.
           </p>
         </div>
       </div>
