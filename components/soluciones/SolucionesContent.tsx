@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import SurveyCtaSection from "@/components/landing/SurveyCtaSection";
 import { FARMAFACIL_DEMO_URL } from "@/lib/constants";
 
 const plans = [
@@ -370,8 +369,6 @@ export default function SolucionesContent() {
           </p>
         </div>
       </section>
-
-      <SurveyCtaSection showIllustration />
 
       {/* CTA final */}
       <section

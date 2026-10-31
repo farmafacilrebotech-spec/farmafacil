@@ -3,14 +3,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { areBonosDisponibles } from "@/lib/encuesta/config";
 
-type SurveyCtaSectionProps = {
-  /** Ilustración discreta (p. ej. en /soluciones). La home no la usa. */
-  showIllustration?: boolean;
-};
-
-export default function SurveyCtaSection({
-  showIllustration = false,
-}: SurveyCtaSectionProps) {
+export default function SurveyCtaSection() {
   const bonosDisponibles = areBonosDisponibles();
 
   return (
@@ -19,14 +12,8 @@ export default function SurveyCtaSection({
       className="scroll-mt-20 border-y border-gray-100 bg-white py-14 sm:py-16"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div
-          className={
-            showIllustration
-              ? "flex flex-col gap-5 rounded-3xl bg-gradient-to-br from-[#F7F9FA] to-white p-6 ring-1 ring-gray-100 sm:gap-6 sm:p-8 lg:flex-row lg:items-center lg:gap-8"
-              : "flex flex-col items-start justify-between gap-6 rounded-3xl bg-gradient-to-br from-[#F7F9FA] to-white p-6 ring-1 ring-gray-100 sm:flex-row sm:items-center sm:p-8"
-          }
-        >
-          <div className={showIllustration ? "min-w-0 flex-1 lg:max-w-xl" : "max-w-xl"}>
+        <div className="grid grid-cols-1 gap-5 rounded-3xl bg-gradient-to-br from-[#F7F9FA] to-white p-6 ring-1 ring-gray-100 sm:gap-6 sm:p-8 lg:grid-cols-[minmax(0,1fr)_9.5rem_auto] lg:items-center lg:gap-8">
+          <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-wide text-[#1ABBB3]">
               Estudio para titulares
             </p>
@@ -40,26 +27,20 @@ export default function SurveyCtaSection({
             </p>
           </div>
 
-          {showIllustration ? (
-            <div className="order-3 flex justify-center lg:order-none lg:mx-2 lg:w-36 lg:shrink-0 xl:w-40">
-              <Image
-                src="/images/ilustraciones/encuesta-farmacias-card.png"
-                alt="Ilustración conceptual del estudio FarmaFácil para farmacias."
-                width={480}
-                height={393}
-                sizes="(min-width: 1024px) 10rem, 9rem"
-                className="h-auto w-36 object-contain opacity-95 sm:w-40 lg:w-full"
-              />
-            </div>
-          ) : null}
+          <div className="order-3 flex justify-center lg:order-none lg:col-start-2 lg:row-start-1 lg:justify-self-center">
+            <Image
+              src="/images/ilustraciones/encuesta-farmacias-card.png"
+              alt="Ilustración conceptual del estudio FarmaFácil para farmacias."
+              width={480}
+              height={393}
+              sizes="(min-width: 1024px) 9.5rem, 10rem"
+              className="h-auto max-h-28 w-40 object-contain sm:max-h-32 sm:w-44 lg:max-h-[7.5rem] lg:w-[9.5rem]"
+            />
+          </div>
 
           <Button
             asChild
-            className={
-              showIllustration
-                ? "order-2 h-12 w-full shrink-0 rounded-full bg-[#1ABBB3] px-8 text-base font-semibold text-white hover:bg-[#159a94] sm:w-auto lg:order-none"
-                : "h-12 shrink-0 rounded-full bg-[#1ABBB3] px-8 text-base font-semibold text-white hover:bg-[#159a94]"
-            }
+            className="order-2 h-12 w-full shrink-0 justify-self-start rounded-full bg-[#1ABBB3] px-8 text-base font-semibold text-white hover:bg-[#159a94] sm:w-auto lg:order-none lg:col-start-3 lg:row-start-1 lg:justify-self-end"
           >
             <Link href="/encuesta-farmacias">Participar en el estudio</Link>
           </Button>
