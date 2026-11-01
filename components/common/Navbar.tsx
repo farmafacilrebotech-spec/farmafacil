@@ -11,8 +11,6 @@ import {
   getClienteSession, 
   clearSession 
 } from "@/lib/sessionManager";
-import { FARMAFACIL_APP_URL } from "@/lib/constants";
-
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [userType, setUserType] = useState<"farmacia" | "cliente" | null>(null);
@@ -129,15 +127,11 @@ export default function Navbar() {
                 </Button>
               </div>
             ) : (
-              <a
-                href={FARMAFACIL_APP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <Link href="/acceder">
                 <Button className="bg-[#1ABBB3] hover:bg-[#4ED3C2] text-white rounded-full px-6">
                   Acceder
                 </Button>
-              </a>
+              </Link>
             )}
           </div>
 
@@ -194,17 +188,15 @@ export default function Navbar() {
                 </button>
               </>
             ) : (
-              <a
-                href={FARMAFACIL_APP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/acceder"
                 className="block py-2"
                 onClick={() => setIsOpen(false)}
               >
                 <Button className="w-full bg-[#1ABBB3] hover:bg-[#4ED3C2] text-white rounded-full">
                   Acceder
                 </Button>
-              </a>
+              </Link>
             )}
           </div>
         </div>

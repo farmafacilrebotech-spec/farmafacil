@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import FooterLogo from "@/components/common/FooterLogo";
 import {
-  FARMAFACIL_APP_URL,
   FARMAFACIL_CONTACT_EMAIL,
   FARMAFACIL_DEMO_URL,
   FARMAFACIL_PHONE_DISPLAY,
@@ -87,14 +86,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a
-                  href={FARMAFACIL_APP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/acceder"
                   className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
                 >
                   Acceder
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

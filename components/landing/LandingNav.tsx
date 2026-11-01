@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Menu, X, Pill } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { FARMAFACIL_APP_URL, FARMAFACIL_DEMO_URL } from "@/lib/constants";
+import { FARMAFACIL_DEMO_URL } from "@/lib/constants";
 
 const navItems = [
   { href: "#problema", label: "Retos" },
@@ -73,14 +73,12 @@ export default function LandingNav({ className }: { className?: string }) {
         </nav>
 
         <div className="flex items-center gap-2">
-          <a
-            href={FARMAFACIL_APP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/acceder"
             className="hidden text-sm font-medium text-gray-500 hover:text-[#1ABBB3] sm:block"
           >
             Acceder
-          </a>
+          </Link>
           <Button
             asChild
             variant="outline"
@@ -138,15 +136,13 @@ export default function LandingNav({ className }: { className?: string }) {
             >
               Contacto
             </Link>
-            <a
-              href={FARMAFACIL_APP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/acceder"
               className="rounded-lg px-3 py-3 text-base font-medium text-gray-500"
               onClick={() => setOpen(false)}
             >
               Acceder
-            </a>
+            </Link>
             <Button
               asChild
               variant="outline"
