@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { FARMAFACIL_PRUEBA_HREF } from "@/lib/constants";
 
 export default function FloatingDemoCta() {
   return (
@@ -10,7 +11,7 @@ export default function FloatingDemoCta() {
           asChild
           className="h-12 w-full rounded-2xl bg-[#1ABBB3] text-base font-semibold text-white shadow-lg shadow-[#1ABBB3]/25 hover:bg-[#159a94]"
         >
-          <a href="#solicitar-demo">Solicitar demo gratuita</a>
+          <a href={FARMAFACIL_PRUEBA_HREF}>Solicitar una prueba</a>
         </Button>
       </div>
     </div>

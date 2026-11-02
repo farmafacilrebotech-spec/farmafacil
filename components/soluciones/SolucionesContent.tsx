@@ -11,7 +11,10 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { FARMAFACIL_DEMO_URL } from "@/lib/constants";
+import {
+  FARMAFACIL_CONTACTO_HREF,
+  FARMAFACIL_PRUEBA_HREF,
+} from "@/lib/constants";
 
 const plans = [
   {
@@ -122,20 +125,14 @@ export default function SolucionesContent() {
                   asChild
                   className="rounded-full bg-[#1ABBB3] px-6 text-white hover:bg-[#159a94]"
                 >
-                  <Link href="/contacto">Solicitar información</Link>
+                  <Link href={FARMAFACIL_PRUEBA_HREF}>Solicitar una prueba</Link>
                 </Button>
                 <Button
                   asChild
                   variant="outline"
                   className="rounded-full border-[#1ABBB3] bg-white px-6 text-[#1ABBB3] hover:bg-[#1ABBB3]/10"
                 >
-                  <a
-                    href={FARMAFACIL_DEMO_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Ver demostración
-                  </a>
+                  <Link href={FARMAFACIL_CONTACTO_HREF}>Hablar con FarmaFácil</Link>
                 </Button>
               </div>
             </div>
@@ -412,20 +409,14 @@ export default function SolucionesContent() {
               asChild
               className="h-12 rounded-full bg-[#1ABBB3] px-7 text-base font-semibold text-white hover:bg-[#159a94]"
             >
-              <a
-                href={FARMAFACIL_DEMO_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Probar demo interactiva
-              </a>
+              <a href={FARMAFACIL_PRUEBA_HREF}>Solicitar una prueba</a>
             </Button>
             <Button
               asChild
               variant="outline"
               className="h-12 rounded-full border-[#4ED3C2]/50 bg-transparent px-7 text-base font-semibold text-[#4ED3C2] hover:bg-[#1ABBB3]/10 hover:text-white"
             >
-              <Link href="/#solicitar-demo">Solicitar una demostración</Link>
+              <Link href={FARMAFACIL_CONTACTO_HREF}>Hablar con FarmaFácil</Link>
             </Button>
           </div>
         </div>

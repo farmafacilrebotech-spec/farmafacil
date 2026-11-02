@@ -32,7 +32,7 @@ export default function HowItWorks() {
           Tres pasos, sin manual de 40 páginas.
         </p>
         <p className="mx-auto mt-6 max-w-xl text-center text-base font-semibold text-[#1ABBB3] sm:text-lg">
-          Empieza a funcionar el mismo día.
+          Una puesta en marcha sencilla, a tu ritmo.
         </p>
 
         <ol className="relative mt-12 flex flex-col space-y-8 sm:mt-14 lg:flex-row lg:items-start lg:justify-between lg:gap-4 lg:space-y-0">

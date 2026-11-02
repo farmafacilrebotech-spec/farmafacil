@@ -5,6 +5,7 @@ import {
   FARMAFACIL_CONTACT_EMAIL,
   FARMAFACIL_DEMO_URL,
   FARMAFACIL_PHONE_DISPLAY,
+  FARMAFACIL_PRUEBA_HREF,
   FARMAFACIL_WHATSAPP_URL,
 } from "@/lib/constants";
 
@@ -79,10 +80,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/#solicitar-demo"
+                  href={FARMAFACIL_PRUEBA_HREF}
                   className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
                 >
-                  Solicitar demo
+                  Solicitar una prueba
                 </Link>
               </li>
               <li>

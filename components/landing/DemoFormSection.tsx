@@ -15,11 +15,11 @@ export default function DemoFormSection() {
         <div className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-[#1A1A1A] sm:text-3xl">
-              Solicita tu demo gratuita
+              Solicita una prueba en tu farmacia
             </h2>
             <p className="mt-4 text-lg text-gray-600">
-              Cuéntanos quién eres y en qué farmacia trabajas. Te llamamos o escribimos con una
-              fecha para enseñarte FarmaFácil en vivo.
+              Cuéntanos quién eres y en qué farmacia trabajas. Te llamamos o escribimos para
+              valorar una prueba piloto adaptada a tu día a día.
             </p>
             <ul className="mt-8 space-y-3 text-sm text-gray-600">
               <li className="flex gap-2">
@@ -28,7 +28,7 @@ export default function DemoFormSection() {
               </li>
               <li className="flex gap-2">
                 <span className="font-bold text-[#1ABBB3]">·</span>
-                Enfoque en tu día a día, no en slides interminables.
+                Enfoque en tu mostrador real, no en slides interminables.
               </li>
             </ul>
           </div>

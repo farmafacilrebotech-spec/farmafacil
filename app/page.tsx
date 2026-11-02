@@ -16,11 +16,6 @@ const MockupShowcase = dynamic(() => import("@/components/landing/MockupShowcase
   ssr: true,
 });
 
-/** Testimonios */
-const SocialProofSection = dynamic(() => import("@/components/landing/SocialProofSection"), {
-  ssr: true,
-});
-
 /** Formulario de demo (incluye ContactForm cliente) */
 const DemoFormSection = dynamic(() => import("@/components/landing/DemoFormSection"), {
   ssr: true,
@@ -44,7 +39,6 @@ export default function Home() {
         <MockupShowcase />
         <UseCasesSection />
         <DifferentiationSection />
-        <SocialProofSection />
         <SurveyCtaSection />
         <CTASection />
         <DemoFormSection />

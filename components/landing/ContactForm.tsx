@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,9 +13,20 @@ type ContactFormProps = {
   className?: string;
 };
 
+function resolveInteresPrueba(): boolean {
+  if (typeof window === "undefined") return true;
+  const params = new URLSearchParams(window.location.search);
+  const interes = params.get("interes");
+  if (interes === "prueba" || interes === "piloto") return true;
+  if (interes === "general" || interes === "contacto") return false;
+  // Por defecto, el formulario de la landing captura interés en prueba piloto
+  return true;
+}
+
 export default function ContactForm({ source = "landing", className }: ContactFormProps) {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [interesPrueba, setInteresPrueba] = useState(source === "landing");
   const [form, setForm] = useState({
     nombre: "",
     farmacia: "",
@@ -23,6 +34,11 @@ export default function ContactForm({ source = "landing", className }: ContactFo
     telefono: "",
     aceptarRGPD: false,
   });
+
+  useEffect(() => {
+    if (source !== "landing") return;
+    setInteresPrueba(resolveInteresPrueba());
+  }, [source]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,15 +52,19 @@ export default function ContactForm({ source = "landing", className }: ContactFo
     }
     setLoading(true);
     try {
+      const mensaje = interesPrueba
+        ? "Solicitud de prueba piloto (landing)"
+        : "Solicitud de contacto (landing)";
+
       const payload = {
         nombre: form.nombre.trim(),
         email: form.email.trim(),
         telefono: form.telefono.trim(),
         farmacia: form.farmacia.trim(),
         tipoUsuario: "farmacia",
-        mensaje: "Solicitud de demo gratuita (landing)",
+        mensaje,
+        interes: interesPrueba ? "prueba_piloto" : "contacto_general",
         source,
-        // Campos extra para webhook / Google Sheets (mapea columnas en tu script)
         submittedAt: new Date().toISOString(),
       };
 
@@ -164,7 +184,7 @@ export default function ContactForm({ source = "landing", className }: ContactFo
         disabled={loading}
         className="mt-6 w-full rounded-full bg-[#1ABBB3] py-6 text-base font-semibold text-white hover:bg-[#159a94] sm:w-auto sm:px-12"
       >
-        {loading ? "Enviando…" : "Solicitar demo gratuita"}
+        {loading ? "Enviando…" : interesPrueba ? "Solicitar una prueba" : "Enviar solicitud"}
       </Button>
 
       <p className="mt-3 text-center text-sm font-medium text-[#1ABBB3] sm:text-left">
@@ -172,7 +192,9 @@ export default function ContactForm({ source = "landing", className }: ContactFo
       </p>
 
       <p className="mt-4 text-xs text-gray-500">
-        Usamos tus datos solo para responderte y concertar la demo.
+        {interesPrueba
+          ? "Usamos tus datos solo para responderte y coordinar una prueba piloto."
+          : "Usamos tus datos solo para responderte y concertar una conversación."}
       </p>
     </form>
   );

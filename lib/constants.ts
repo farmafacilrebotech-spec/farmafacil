@@ -1,5 +1,14 @@
 export const FARMAFACIL_DEMO_URL = "https://demo.farmafacil.solutions";
 
+/**
+ * CTA comercial: solicitud de prueba piloto → formulario de la home.
+ * `interes=prueba` identifica el lead en el envío a contacto/Sheets.
+ */
+export const FARMAFACIL_PRUEBA_HREF = "/?interes=prueba#solicitar-demo";
+
+/** CTA comercial: contacto general. */
+export const FARMAFACIL_CONTACTO_HREF = "/contacto";
+
 /** Acceso público a la aplicación FarmaFácil (no el legacy /dashboard de esta web). */
 export const FARMAFACIL_APP_URL = "https://app.farmafacil.solutions";
 

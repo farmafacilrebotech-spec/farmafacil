@@ -26,7 +26,7 @@ export default function UseCasesSection() {
           ¿Encaja contigo?
         </h2>
         <p className="mt-3 max-w-2xl text-gray-600">
-          Farmacias como la tuya ya están pidiendo demos por situaciones muy concretas.
+          Descubre cómo FarmaFácil puede adaptarse a las necesidades de tu farmacia.
         </p>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {cases.map(({ icon: Icon, title, text }) => (

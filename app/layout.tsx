@@ -25,7 +25,7 @@ const inter = localFont({
 export const metadata: Metadata = {
   title: 'FarmaFácil — Digitaliza tu farmacia sin complicaciones',
   description:
-    'Reduce colas, automatiza pedidos y mejora la atención con catálogo por QR, kiosko en tienda y asistente. Solicita demo gratuita.',
+    'Reduce colas, automatiza pedidos y mejora la atención con catálogo por QR, kiosko en tienda y asistente. Solicita una prueba piloto.',
 
   icons: {
     icon: '/favicon.ico',

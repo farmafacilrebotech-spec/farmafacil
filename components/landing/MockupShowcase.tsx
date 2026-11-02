@@ -1,32 +1,22 @@
+import Image from "next/image";
 import { Smartphone, Monitor, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FARMAFACIL_DEMO_URL } from "@/lib/constants";
+import { FARMAFACIL_PRUEBA_HREF } from "@/lib/constants";
 
 function MobileClientMock() {
   return (
-    <div className="mx-auto w-full max-w-[200px]">
+    <div className="mx-auto flex w-full max-w-[300px] flex-col items-center sm:max-w-[260px] md:max-w-[250px]">
       <p className="mb-3 text-center text-xs font-bold uppercase tracking-wider text-[#1ABBB3]">
         Cliente (móvil)
       </p>
-      <div className="rounded-[1.75rem] border-[3px] border-gray-800 bg-gray-900 p-1 shadow-xl">
-        <div className="overflow-hidden rounded-[1.4rem] bg-white">
-          <div className="bg-[#1ABBB3] px-3 py-2.5 text-center text-xs font-bold text-white">
-            Tu farmacia
-          </div>
-          <div className="space-y-2 p-2">
-            <div className="rounded-lg bg-[#F7F9FA] px-2 py-1.5 text-[10px] text-gray-500">Buscar…</div>
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="flex gap-2 rounded-lg border border-gray-100 p-2">
-                <div className="h-9 w-9 rounded-md bg-gradient-to-br from-[#4ED3C2]/30 to-[#1ABBB3]/20" />
-                <div className="flex-1 space-y-1.5 pt-0.5">
-                  <div className="h-2 w-full max-w-[80%] rounded bg-gray-200" />
-                  <div className="h-2 w-12 rounded bg-[#1ABBB3]/30" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <Image
+        src="/images/mocks/catalogo-cliente-farmafacil.png"
+        alt="Catálogo móvil de FarmaFácil con productos, categorías y acceso al Asistente IA."
+        width={1414}
+        height={2000}
+        sizes="(min-width: 768px) 15.625rem, (min-width: 640px) 16.25rem, 18.75rem"
+        className="h-auto w-full rounded-2xl object-contain shadow-lg ring-1 ring-black/5"
+      />
       <p className="mt-3 text-center text-xs text-gray-500">Catálogo y pedidos desde el bolsillo</p>
     </div>
   );
@@ -34,27 +24,18 @@ function MobileClientMock() {
 
 function KioskTouchMock() {
   return (
-    <div className="mx-auto w-full max-w-[240px]">
-      <div className="rounded-b-xl bg-gray-600 px-4 pb-2 pt-1">
-        <div className="mx-auto h-1.5 w-20 rounded-full bg-gray-500" />
-      </div>
-      <div className="aspect-[4/5] rounded-t-xl border-x-[6px] border-t-[6px] border-gray-600 bg-gray-700 p-2 shadow-xl">
-        <div className="flex h-full flex-col overflow-hidden rounded-lg bg-white">
-          <div className="grid grid-cols-2 gap-2 p-3">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className={`aspect-square rounded-xl ${i === 1 ? "bg-[#1ABBB3]/20 ring-2 ring-[#1ABBB3]" : "bg-gray-100"}`}
-              />
-            ))}
-          </div>
-          <div className="mt-auto border-t border-gray-100 p-3">
-            <div className="h-9 w-full rounded-lg bg-[#1ABBB3] text-center text-xs font-bold leading-9 text-white">
-              Pedir en mostrador
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="mx-auto flex w-full max-w-[210px] flex-col items-center sm:max-w-[190px] md:max-w-[168px]">
+      <p className="mb-3 text-center text-xs font-bold uppercase tracking-wider text-[#1ABBB3]">
+        Kiosko
+      </p>
+      <Image
+        src="/images/kiosko/kiosko-farmafacil-sin-fondo.png"
+        alt="Kiosko de autoservicio FarmaFácil con pantalla táctil, impresora y terminal de pago."
+        width={570}
+        height={1474}
+        sizes="(min-width: 768px) 10.5rem, (min-width: 640px) 11.875rem, 13.125rem"
+        className="h-auto w-full object-contain drop-shadow-md"
+      />
       <p className="mt-3 text-center text-xs text-gray-500">En sala de espera o entrada</p>
     </div>
   );
@@ -62,34 +43,18 @@ function KioskTouchMock() {
 
 function PharmacyPanelMock() {
   return (
-    <div className="mx-auto w-full max-w-[280px]">
+    <div className="mx-auto flex w-full max-w-[380px] flex-col items-center sm:max-w-[340px] md:max-w-[340px]">
       <p className="mb-3 text-center text-xs font-bold uppercase tracking-wider text-[#1ABBB3]">
         Tu control (panel)
       </p>
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-gray-100 shadow-xl ring-1 ring-gray-200">
-        <div className="flex h-8 items-center gap-1.5 border-b border-gray-200 bg-white px-2">
-          <div className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
-          <div className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
-          <div className="h-2.5 w-2.5 rounded-full bg-green-400/80" />
-        </div>
-        <div className="bg-[#1A1A1A] p-3">
-          <div className="mb-2 flex items-center justify-between">
-            <span className="text-[10px] font-semibold text-white/90">Panel farmacia</span>
-            <span className="rounded bg-[#1ABBB3] px-1.5 py-0.5 text-[9px] font-bold text-white">3 nuevos</span>
-          </div>
-          <div className="space-y-2">
-            {["Pedido #104", "Pedido #103", "Consulta IA"].map((label, i) => (
-              <div
-                key={label}
-                className={`rounded-lg px-2 py-2 text-[10px] ${i === 0 ? "bg-[#1ABBB3]/25 text-white" : "bg-white/10 text-white/80"}`}
-              >
-                {label}
-                <span className="float-right opacity-70">{i === 2 ? "FAQ" : "Listo"}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <Image
+        src="/images/mocks/panel-pedidos-farmafacil.png"
+        alt="Panel de pedidos de farmacia FarmaFácil con listado de estados y totales."
+        width={1366}
+        height={768}
+        sizes="(min-width: 768px) 21.25rem, (min-width: 640px) 21.25rem, 23.75rem"
+        className="h-auto w-full rounded-xl object-contain shadow-lg ring-1 ring-black/5"
+      />
       <p className="mt-3 text-center text-xs text-gray-500">Pedidos y avisos en un solo sitio</p>
     </div>
   );
@@ -117,7 +82,7 @@ export default function MockupShowcase() {
           </div>
         </div>
 
-        <div className="mt-14 grid items-start gap-12 md:grid-cols-3 md:gap-8">
+        <div className="mt-14 grid items-start justify-items-center gap-12 md:grid-cols-3 md:gap-8">
           <MobileClientMock />
           <KioskTouchMock />
           <PharmacyPanelMock />
@@ -125,21 +90,15 @@ export default function MockupShowcase() {
 
         <div className="mt-14 flex flex-col items-center text-center">
           <p className="max-w-2xl text-gray-600">
-            Explora FarmaFácil con datos de demostración y descubre el recorrido del cliente, el
-            kiosco y los paneles de gestión.
+            Si quieres verlo aplicado a tu farmacia, podemos valorar contigo una prueba piloto con
+            el recorrido del cliente, el kiosco y los paneles de gestión.
           </p>
           <Button
             asChild
             size="lg"
             className="mt-6 h-12 rounded-full bg-[#1ABBB3] px-8 text-base font-semibold text-white hover:bg-[#159a94]"
           >
-            <a
-              href={FARMAFACIL_DEMO_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Entrar en la demo
-            </a>
+            <a href={FARMAFACIL_PRUEBA_HREF}>Solicitar una prueba</a>
           </Button>
         </div>
       </div>

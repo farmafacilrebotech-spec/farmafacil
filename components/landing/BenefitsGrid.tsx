@@ -8,13 +8,13 @@ const benefits = [
   },
   {
     icon: Sparkles,
-    title: "Más ventas impulsivas",
+    title: "Más oportunidades de venta",
     text: "Ofertas y recomendaciones visibles mientras el cliente espera su turno.",
   },
   {
     icon: Receipt,
-    title: "Más tickets por cliente",
-    text: "Mientras espera, el cliente ve productos que no venía a comprar.",
+    title: "Mayor visibilidad de tus productos",
+    text: "Tu catálogo y novedades quedan a la vista antes de llegar al mostrador.",
   },
   {
     icon: Heart,
@@ -33,7 +33,7 @@ export default function BenefitsGrid() {
     <section id="beneficios" className="scroll-mt-20 bg-[#F7F9FA] py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-bold tracking-tight text-[#1A1A1A] sm:text-3xl">
-          Beneficios que notas en la caja
+          Beneficios para tu farmacia
         </h2>
         <p className="mt-3 max-w-2xl text-gray-600">
           Hablamos de tu negocio, no de “integraciones” ni “arquitecturas”.
