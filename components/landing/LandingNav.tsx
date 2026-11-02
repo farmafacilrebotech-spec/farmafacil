@@ -27,19 +27,19 @@ export default function LandingNav({ className }: { className?: string }) {
       )}
     >
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:h-16 sm:px-6 lg:px-8">
-        <Link href="/" className="flex shrink-0 items-center gap-2">
+        <Link href="/" className="flex shrink-0 items-center gap-2.5">
           {!logoError ? (
             <Image
-              src="/images/logo/farmafacil-logo.png"
+              src="/images/logo/farmafacil-emblema-circular.png"
               alt="FarmaFácil"
               width={40}
               height={40}
-              className="h-9 w-9 object-contain sm:h-10 sm:w-10"
+              className="h-9 w-9 rounded-full object-contain sm:h-10 sm:w-10"
               onError={() => setLogoError(true)}
               priority
             />
           ) : (
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#4ED3C2] to-[#1ABBB3] sm:h-10 sm:w-10">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#4ED3C2] to-[#1ABBB3] sm:h-10 sm:w-10">
               <Pill className="h-5 w-5 text-white" />
             </div>
           )}
@@ -65,7 +65,7 @@ export default function LandingNav({ className }: { className?: string }) {
             Soluciones y planes
           </Link>
           <Link
-            href="/contacto"
+            href={FARMAFACIL_CONTACTO_HREF}
             className="rounded-full px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-[#F7F9FA] hover:text-[#1ABBB3]"
           >
             Contacto
@@ -124,7 +124,7 @@ export default function LandingNav({ className }: { className?: string }) {
               Soluciones y planes
             </Link>
             <Link
-              href="/contacto"
+              href={FARMAFACIL_CONTACTO_HREF}
               className="rounded-lg px-3 py-3 text-base font-medium text-gray-800"
               onClick={() => setOpen(false)}
             >

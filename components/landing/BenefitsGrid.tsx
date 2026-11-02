@@ -1,4 +1,5 @@
-import { BellOff, Sparkles, Heart, Building2, Receipt } from "lucide-react";
+import Image from "next/image";
+import { BellOff, Sparkles, Heart, Building2, Receipt, Smartphone } from "lucide-react";
 
 const benefits = [
   {
@@ -26,6 +27,13 @@ const benefits = [
     title: "Imagen moderna",
     text: "Transmites orden, tecnología útil y una farmacia al día — sin postureo.",
   },
+  {
+    icon: Smartphone,
+    image: "/images/ilustraciones/kiosk-search.png",
+    imageAlt: "Clientes consultando el catálogo desde el móvil",
+    title: "Clientes más conectados",
+    text: "Tus clientes pueden consultar el catálogo y realizar solicitudes desde su móvil, incluso antes de visitar la farmacia.",
+  },
 ] as const;
 
 export default function BenefitsGrid() {
@@ -39,18 +47,35 @@ export default function BenefitsGrid() {
           Hablamos de tu negocio, no de “integraciones” ni “arquitecturas”.
         </p>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {benefits.map(({ icon: Icon, title, text }) => (
-            <div
-              key={title}
-              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
-            >
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#1ABBB3]/10">
-                <Icon className="h-5 w-5 text-[#1ABBB3]" aria-hidden />
+          {benefits.map((benefit) => {
+            const Icon = benefit.icon;
+            const image = "image" in benefit ? benefit.image : undefined;
+            const imageAlt = "imageAlt" in benefit ? benefit.imageAlt : undefined;
+            return (
+              <div
+                key={benefit.title}
+                className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+              >
+                <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl bg-[#1ABBB3]/10">
+                  {image ? (
+                    <Image
+                      src={image}
+                      alt={imageAlt || benefit.title}
+                      width={44}
+                      height={44}
+                      className="h-9 w-9 object-contain"
+                    />
+                  ) : (
+                    <Icon className="h-5 w-5 text-[#1ABBB3]" aria-hidden />
+                  )}
+                </div>
+                <h3 className="mt-4 text-lg font-bold text-[#1A1A1A]">{benefit.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-gray-600 sm:text-base">
+                  {benefit.text}
+                </p>
               </div>
-              <h3 className="mt-4 text-lg font-bold text-[#1A1A1A]">{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-gray-600 sm:text-base">{text}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

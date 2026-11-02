@@ -11,6 +11,8 @@ import {
   getClienteSession, 
   clearSession 
 } from "@/lib/sessionManager";
+import { FARMAFACIL_CONTACTO_HREF } from "@/lib/constants";
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [userType, setUserType] = useState<"farmacia" | "cliente" | null>(null);
@@ -62,24 +64,23 @@ export default function Navbar() {
     <nav className="bg-white shadow-md fixed top-0 w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center gap-2.5">
             {!logoError ? (
-              <div className="relative w-10 h-10">
-                <Image
-                  src="/images/logo/farmafacil-logo.png"
-                  alt="FarmaFácil Logo"
-                  width={40}
-                  height={40}
-                  className="object-contain"
-                  onError={() => setLogoError(true)}
-                />
-              </div>
+              <Image
+                src="/images/logo/farmafacil-emblema-circular.png"
+                alt="FarmaFácil"
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-full object-contain"
+                onError={() => setLogoError(true)}
+                priority
+              />
             ) : (
-              <div className="bg-gradient-to-br from-[#4ED3C2] to-[#1ABBB3] p-2 rounded-lg">
-                <Pill className="h-6 w-6 text-white" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#4ED3C2] to-[#1ABBB3]">
+                <Pill className="h-5 w-5 text-white" />
               </div>
             )}
-            <span className="text-2xl font-bold text-gray-800">
+            <span className="text-xl font-bold tracking-tight text-[#1A1A1A] sm:text-2xl">
               FarmaFácil
             </span>
           </Link>
@@ -98,7 +99,7 @@ export default function Navbar() {
               Soluciones y planes
             </Link>
             <Link
-              href="/contacto"
+              href={FARMAFACIL_CONTACTO_HREF}
               className="text-gray-700 hover:text-[#1ABBB3] transition-colors font-medium"
             >
               Contacto
@@ -162,7 +163,7 @@ export default function Navbar() {
               Soluciones y planes
             </Link>
             <Link
-              href="/contacto"
+              href={FARMAFACIL_CONTACTO_HREF}
               className="block py-2 text-gray-700 hover:text-[#1ABBB3]"
               onClick={() => setIsOpen(false)}
             >

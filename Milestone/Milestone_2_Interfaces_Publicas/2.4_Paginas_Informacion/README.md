@@ -176,7 +176,7 @@ export default function PrivacidadPage() {
             <h2>7. Contacto</h2>
             <p>
               Para cualquier consulta sobre esta política, contacta con 
-              nuestro Delegado de Protección de Datos en dpo@farmafacil.com
+              nuestro Delegado de Protección de Datos en privacidad@farmafacil.solutions
             </p>
           </div>
         </div>

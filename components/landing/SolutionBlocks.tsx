@@ -1,22 +1,25 @@
-import { LayoutGrid, Monitor, Bot } from "lucide-react";
+import Image from "next/image";
 
 const blocks = [
   {
-    icon: LayoutGrid,
+    image: "/images/ilustraciones/kiosk-qr.png",
+    imageAlt: "Catálogo digital FarmaFácil accesible por QR",
     title: "Catálogo digital",
     micro: "Tus clientes consultan antes de preguntar",
     bullets: ["Productos, ofertas y stock", "Tus clientes entran con un QR"],
     accent: "from-[#1ABBB3]/10 to-[#4ED3C2]/10",
   },
   {
-    icon: Monitor,
+    image: "/images/ilustraciones/kiosk-cart.png",
+    imageAlt: "Kiosko en tienda FarmaFácil para pedidos",
     title: "Kiosko en tienda",
     micro: "Piden sin pasar por el mostrador",
     bullets: ["Pedidos sin colas", "Flujo claro, tipo McDonald’s"],
     accent: "from-[#4ED3C2]/15 to-[#1ABBB3]/10",
   },
   {
-    icon: Bot,
+    image: "/images/ilustraciones/kiosk-ai.png",
+    imageAlt: "Asistente con IA FarmaFácil",
     title: "Asistente con IA",
     micro: "Responde lo repetitivo para ti",
     bullets: ["Responde dudas frecuentes", "Te devuelve minutos en el mostrador"],
@@ -38,13 +41,19 @@ export default function SolutionBlocks() {
           </p>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {blocks.map(({ icon: Icon, title, micro, bullets, accent }) => (
+          {blocks.map(({ image, imageAlt, title, micro, bullets, accent }) => (
             <article
               key={title}
               className={`flex flex-col rounded-2xl border border-gray-100 bg-gradient-to-br ${accent} p-6 shadow-sm ring-1 ring-white/80`}
             >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-gray-100">
-                <Icon className="h-6 w-6 text-[#1ABBB3]" aria-hidden />
+              <div className="mb-4 flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-100">
+                <Image
+                  src={image}
+                  alt={imageAlt}
+                  width={56}
+                  height={56}
+                  className="h-12 w-12 object-contain"
+                />
               </div>
               <h3 className="text-xl font-bold text-[#1A1A1A]">{title}</h3>
               <p className="mt-2 text-sm font-semibold leading-snug text-[#1ABBB3]">{micro}</p>

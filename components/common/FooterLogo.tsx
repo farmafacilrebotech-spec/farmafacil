@@ -21,7 +21,7 @@ export default function FooterLogo() {
       alt="FarmaFácil"
       width={80}
       height={80}
-      className="h-20 w-20 shrink-0 object-contain"
+      className="h-20 w-20 shrink-0 rounded-full object-contain"
       onError={() => setError(true)}
     />
   );

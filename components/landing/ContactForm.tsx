@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 
@@ -32,6 +33,7 @@ export default function ContactForm({ source = "landing", className }: ContactFo
     farmacia: "",
     email: "",
     telefono: "",
+    infoFarmacia: "",
     aceptarRGPD: false,
   });
 
@@ -63,6 +65,7 @@ export default function ContactForm({ source = "landing", className }: ContactFo
         farmacia: form.farmacia.trim(),
         tipoUsuario: "farmacia",
         mensaje,
+        infoFarmacia: form.infoFarmacia.trim(),
         interes: interesPrueba ? "prueba_piloto" : "contacto_general",
         source,
         submittedAt: new Date().toISOString(),
@@ -86,10 +89,11 @@ export default function ContactForm({ source = "landing", className }: ContactFo
         farmacia: "",
         email: "",
         telefono: "",
+        infoFarmacia: "",
         aceptarRGPD: false,
       });
     } catch (err) {
-      console.error(err);
+      console.error("Error al enviar formulario de contacto");
       toast({
         title: "No se pudo enviar",
         description: "Inténtalo de nuevo en unos minutos o escríbenos por contacto.",
@@ -162,6 +166,21 @@ export default function ContactForm({ source = "landing", className }: ContactFo
         </div>
       </div>
 
+      <div className="mt-4">
+        <Label htmlFor="demo-info-farmacia" className="text-gray-700">
+          Cuéntanos algo de tu farmacia{" "}
+          <span className="font-normal text-gray-500">(opcional)</span>
+        </Label>
+        <Textarea
+          id="demo-info-farmacia"
+          placeholder="Por ejemplo, dónde está tu farmacia, qué te gustaría mejorar o qué servicios de FarmaFácil te interesan"
+          rows={4}
+          value={form.infoFarmacia}
+          onChange={(e) => setForm({ ...form, infoFarmacia: e.target.value })}
+          className="mt-1.5"
+        />
+      </div>
+
       <div className="mt-4 flex items-start gap-2">
         <input
           id="demo-rgpd"
@@ -188,7 +207,7 @@ export default function ContactForm({ source = "landing", className }: ContactFo
       </Button>
 
       <p className="mt-3 text-center text-sm font-medium text-[#1ABBB3] sm:text-left">
-        Te respondemos en menos de 24h
+        Te responderemos lo antes posible
       </p>
 
       <p className="mt-4 text-xs text-gray-500">

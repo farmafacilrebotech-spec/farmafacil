@@ -138,8 +138,8 @@ export default function TerminosPage() {
               <p className="mb-4 leading-relaxed">
                 Si tiene preguntas sobre estos términos y condiciones, puede contactarnos a través 
                 de nuestra página de contacto o enviando un correo electrónico a 
-                <a href="mailto:legal@farmafacil.com" className="text-[#1ABBB3] hover:underline ml-1">
-                  legal@farmafacil.com
+                <a href="mailto:privacidad@farmafacil.solutions" className="text-[#1ABBB3] hover:underline ml-1">
+                  privacidad@farmafacil.solutions
                 </a>
               </p>
             </section>

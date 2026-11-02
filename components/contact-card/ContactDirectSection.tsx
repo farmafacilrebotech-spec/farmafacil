@@ -23,9 +23,10 @@ export default function ContactDirectSection({ contact, className }: Props) {
 
   return (
     <section
+      id="tarjeta-digital"
       aria-labelledby="contacto-directo-title"
       className={cn(
-        "overflow-hidden rounded-2xl border border-[#A8B0B8]/25 bg-[#0A0C10] text-white shadow-[0_0_40px_rgba(26,187,179,0.12)]",
+        "scroll-mt-24 overflow-hidden rounded-2xl border border-[#A8B0B8]/25 bg-[#0A0C10] text-white shadow-[0_0_40px_rgba(26,187,179,0.12)]",
         className
       )}
     >

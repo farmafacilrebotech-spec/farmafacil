@@ -3,9 +3,10 @@ import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import FooterLogo from "@/components/common/FooterLogo";
 import {
   FARMAFACIL_CONTACT_EMAIL,
-  FARMAFACIL_DEMO_URL,
+  FARMAFACIL_CONTACTO_HREF,
   FARMAFACIL_PHONE_DISPLAY,
   FARMAFACIL_PRUEBA_HREF,
+  FARMAFACIL_TARJETA_PAGE_HREF,
   FARMAFACIL_WHATSAPP_URL,
 } from "@/lib/constants";
 
@@ -45,16 +46,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a
-                  href={FARMAFACIL_DEMO_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
-                >
-                  Demo
-                </a>
-              </li>
-              <li>
                 <Link
                   href="/encuesta-farmacias"
                   className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
@@ -64,7 +55,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/contacto"
+                  href={FARMAFACIL_CONTACTO_HREF}
                   className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
                 >
                   Contacto
@@ -72,7 +63,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/contacto/pilar"
+                  href={FARMAFACIL_TARJETA_PAGE_HREF}
                   className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
                 >
                   Tarjeta de contacto
@@ -132,11 +123,21 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center space-x-2 text-gray-400 text-sm">
                 <Mail className="h-4 w-4" />
-                <span>{FARMAFACIL_CONTACT_EMAIL}</span>
+                <a
+                  href={`mailto:${FARMAFACIL_CONTACT_EMAIL}`}
+                  className="hover:text-[#4ED3C2] transition-colors"
+                >
+                  {FARMAFACIL_CONTACT_EMAIL}
+                </a>
               </li>
               <li className="flex items-center space-x-2 text-gray-400 text-sm">
                 <Phone className="h-4 w-4" />
-                <span>{FARMAFACIL_PHONE_DISPLAY}</span>
+                <a
+                  href={`tel:${FARMAFACIL_PHONE_DISPLAY.replace(/\s+/g, "")}`}
+                  className="hover:text-[#4ED3C2] transition-colors"
+                >
+                  {FARMAFACIL_PHONE_DISPLAY}
+                </a>
               </li>
               <li className="flex items-center space-x-2 text-gray-400 text-sm">
                 <MapPin className="h-4 w-4" />
@@ -167,4 +168,3 @@ export default function Footer() {
     </footer>
   );
 }
-

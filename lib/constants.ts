@@ -6,8 +6,17 @@ export const FARMAFACIL_DEMO_URL = "https://demo.farmafacil.solutions";
  */
 export const FARMAFACIL_PRUEBA_HREF = "/?interes=prueba#solicitar-demo";
 
-/** CTA comercial: contacto general. */
-export const FARMAFACIL_CONTACTO_HREF = "/contacto";
+/** CTA comercial: contacto general → formulario de /contacto. */
+export const FARMAFACIL_CONTACTO_HREF = "/contacto#formulario-contacto";
+
+/** Bloque de tarjeta digital en /contacto. */
+export const FARMAFACIL_TARJETA_HREF = "/contacto#tarjeta-digital";
+
+/** Página dedicada de la tarjeta digital. */
+export const FARMAFACIL_TARJETA_PAGE_HREF = "/contacto/pilar";
+
+/** Calendly corporativo (citas / llamada). */
+export const FARMAFACIL_CALENDLY_URL = "https://calendly.com/farmafacil/bienvenida";
 
 /** Acceso público a la aplicación FarmaFácil (no el legacy /dashboard de esta web). */
 export const FARMAFACIL_APP_URL = "https://app.farmafacil.solutions";
