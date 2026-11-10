@@ -6,7 +6,7 @@ import Footer from "@/components/common/Footer";
 import {
   FARMAFACIL_CONTACTO_HREF,
   FARMAFACIL_DEMO_URL,
-  FARMAFACIL_PRUEBA_HREF,
+  farmafacilSolicitudHref,
 } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -32,7 +32,7 @@ export default function DemoPage() {
               asChild
               className="h-12 rounded-full bg-[#1ABBB3] px-8 text-base font-semibold text-white hover:bg-[#159a94]"
             >
-              <Link href={FARMAFACIL_PRUEBA_HREF}>Solicitar una prueba</Link>
+              <Link href={farmafacilSolicitudHref("demo")}>Solicitar una prueba</Link>
             </Button>
             <Button
               asChild

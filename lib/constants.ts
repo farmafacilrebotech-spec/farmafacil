@@ -1,10 +1,29 @@
+import { buildCommercialHref, type CommercialInterestId } from "@/lib/contacto/comercial";
+
 export const FARMAFACIL_DEMO_URL = "https://demo.farmafacil.solutions";
 
 /**
- * CTA comercial: solicitud de prueba piloto → formulario de la home.
- * `interes=prueba` identifica el lead en el envío a contacto/Sheets.
+ * Ancla histórica de la home. Los QR y enlaces ya publicados siguen abriendo
+ * el formulario con el piloto preseleccionado. Los CTA nuevos usan
+ * `farmafacilSolicitudHref`.
  */
 export const FARMAFACIL_PRUEBA_HREF = "/?interes=prueba#solicitar-demo";
+
+/** Ruta estable del formulario comercial y del QR impreso. */
+export const FARMAFACIL_SOLICITAR_HREF = "/solicitar";
+
+/** Enlace de un botón web hacia /solicitar, con procedencia y sin datos personales. */
+export function farmafacilSolicitudHref(
+  pieza: string,
+  interes: CommercialInterestId = "piloto"
+): string {
+  return buildCommercialHref({
+    interes,
+    origen: "web",
+    medio: "boton",
+    pieza,
+  });
+}
 
 /** CTA comercial: contacto general → formulario de /contacto. */
 export const FARMAFACIL_CONTACTO_HREF = "/contacto#formulario-contacto";

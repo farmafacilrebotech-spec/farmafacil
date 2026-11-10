@@ -11,9 +11,10 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { buildCommercialHref } from "@/lib/contacto/comercial";
 import {
   FARMAFACIL_CONTACTO_HREF,
-  FARMAFACIL_PRUEBA_HREF,
+  farmafacilSolicitudHref,
 } from "@/lib/constants";
 
 const plans = [
@@ -28,7 +29,13 @@ const plans = [
       "Solicitudes y pedidos",
       "Identificación básica del cliente mediante nombre y teléfono",
     ],
-    contactHref: "/contacto?plan=general",
+    contactHref: buildCommercialHref({
+      interes: "planes",
+      plan: "general",
+      origen: "web",
+      medio: "boton",
+      pieza: "plan-general",
+    }),
     accent: "from-[#1ABBB3]/10 to-[#4ED3C2]/10",
   },
   {
@@ -42,7 +49,13 @@ const plans = [
       "Cuenta de cliente",
       "Historial de pedidos",
     ],
-    contactHref: "/contacto?plan=personalizado",
+    contactHref: buildCommercialHref({
+      interes: "planes",
+      plan: "personalizado",
+      origen: "web",
+      medio: "boton",
+      pieza: "plan-personalizado",
+    }),
     accent: "from-[#4ED3C2]/15 to-[#1ABBB3]/10",
   },
   {
@@ -55,7 +68,13 @@ const plans = [
       "Asistente IA personalizado",
       "Asistente conectado al catálogo propio de la farmacia",
     ],
-    contactHref: "/contacto?plan=asistente-ia",
+    contactHref: buildCommercialHref({
+      interes: "planes",
+      plan: "asistente-ia",
+      origen: "web",
+      medio: "boton",
+      pieza: "plan-asistente-ia",
+    }),
     accent: "from-[#1ABBB3]/10 to-white",
     note: "El asistente orienta al cliente sobre el catálogo y la farmacia. No realiza diagnósticos ni asesoramiento clínico autónomo.",
   },
@@ -98,9 +117,17 @@ const platformFeatures = [
   },
 ] as const;
 
+const kioskoHref = buildCommercialHref({
+  interes: "planes",
+  plan: "kiosko",
+  origen: "web",
+  medio: "boton",
+  pieza: "kiosko",
+});
+
 /**
  * Contenido comercial de /soluciones.
- * Enlaces a /contacto?plan=… preparados; el formulario aún no consume el parámetro.
+ * «Solicitar información» abre /solicitar con el plan y, si aplica, la necesidad.
  */
 export default function SolucionesContent() {
   return (
@@ -125,7 +152,7 @@ export default function SolucionesContent() {
                   asChild
                   className="rounded-full bg-[#1ABBB3] px-6 text-white hover:bg-[#159a94]"
                 >
-                  <Link href={FARMAFACIL_PRUEBA_HREF}>Solicitar una prueba</Link>
+                  <Link href={farmafacilSolicitudHref("soluciones")}>Solicitar una prueba</Link>
                 </Button>
                 <Button
                   asChild
@@ -290,7 +317,7 @@ export default function SolucionesContent() {
                 asChild
                 className="mt-8 hidden rounded-full bg-[#1ABBB3] px-6 text-white hover:bg-[#159a94] lg:inline-flex"
               >
-                <Link href="/contacto?plan=kiosko">Solicitar información</Link>
+                <Link href={kioskoHref}>Solicitar información</Link>
               </Button>
             </div>
 
@@ -307,7 +334,7 @@ export default function SolucionesContent() {
               asChild
               className="justify-self-start rounded-full bg-[#1ABBB3] px-6 text-white hover:bg-[#159a94] lg:hidden"
             >
-              <Link href="/contacto?plan=kiosko">Solicitar información</Link>
+              <Link href={kioskoHref}>Solicitar información</Link>
             </Button>
           </div>
         </div>
@@ -409,7 +436,7 @@ export default function SolucionesContent() {
               asChild
               className="h-12 rounded-full bg-[#1ABBB3] px-7 text-base font-semibold text-white hover:bg-[#159a94]"
             >
-              <a href={FARMAFACIL_PRUEBA_HREF}>Solicitar una prueba</a>
+              <a href={farmafacilSolicitudHref("soluciones-cierre")}>Solicitar una prueba</a>
             </Button>
             <Button
               asChild

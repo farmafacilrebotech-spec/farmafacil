@@ -2,25 +2,16 @@ import {
   FARMAFACIL_CALENDLY_URL,
   FARMAFACIL_CONTACT_EMAIL,
 } from "@/lib/constants";
+import { classifyLead, interestLabel } from "./comercial";
 import {
   getContactAdminEmail,
   getContactEmailFrom,
   getMissingContactEmailEnv,
   isContactEmailConfigured,
 } from "./config";
+import type { ContactLeadPayload } from "./types";
 
-export type ContactLeadPayload = {
-  nombre: string;
-  farmacia?: string;
-  email: string;
-  telefono?: string;
-  tipoUsuario?: string;
-  mensaje: string;
-  infoFarmacia?: string;
-  interes?: string;
-  source?: string;
-  submittedAt?: string;
-};
+export type { ContactLeadPayload } from "./types";
 
 export type ContactEmailSendResult = {
   ok: boolean;
@@ -68,40 +59,19 @@ function tipoLabel(tipo?: string): string {
   return asText(tipo) || "—";
 }
 
-function originLabel(payload: ContactLeadPayload): {
-  kind: "prueba" | "contacto";
-  label: string;
-  subjectInternal: string;
-} {
-  const interes = (payload.interes || "").toLowerCase();
-  const source = (payload.source || "").toLowerCase();
-  const mensaje = (payload.mensaje || "").toLowerCase();
-  const isPrueba =
-    interes.includes("prueba") ||
-    interes.includes("piloto") ||
-    source === "landing" ||
-    mensaje.includes("prueba piloto");
+function yesNo(value: boolean): string {
+  return value ? "Sí" : "No";
+}
 
-  if (isPrueba) {
-    return {
-      kind: "prueba",
-      label: "Solicitud de prueba",
-      subjectInternal: "Nueva solicitud de prueba | FarmaFácil",
-    };
-  }
-  return {
-    kind: "contacto",
-    label: "Formulario de contacto",
-    subjectInternal: "Nuevo contacto | FarmaFácil",
-  };
+function shown(value: string): string {
+  return value || "—";
 }
 
 function row(label: string, value: string): string {
-  if (!value) return "";
   return `
     <tr>
       <td style="padding:10px 0;border-bottom:1px solid #E8EEF0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#6B7280;width:38%;vertical-align:top">${escapeHtml(label)}</td>
-      <td style="padding:10px 0;border-bottom:1px solid #E8EEF0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1A1A;vertical-align:top">${escapeHtml(value)}</td>
+      <td style="padding:10px 0;border-bottom:1px solid #E8EEF0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1A1A1A;vertical-align:top">${escapeHtml(shown(value))}</td>
     </tr>`;
 }
 
@@ -134,14 +104,125 @@ function shell(inner: string): string {
 </html>`;
 }
 
+function interestDisplay(payload: ContactLeadPayload): string {
+  return asText(payload.interesEtiqueta) || interestLabel(payload.interes) || asText(payload.interes);
+}
+
+function commercialField(label: string, value: string, options?: { preserveBreaks?: boolean }): string {
+  const clean = value.trim();
+  if (!clean) return "";
+  const body = options?.preserveBreaks
+    ? escapeHtml(clean).replace(/\r\n|\n|\r/g, "<br />")
+    : escapeHtml(clean);
+  return `
+    <tr>
+      <td style="padding:0 0 16px;font-family:Arial,Helvetica,sans-serif">
+        <div style="margin:0 0 4px;font-size:12px;line-height:1.4;color:#6B7280">${escapeHtml(label)}</div>
+        <div style="margin:0;font-size:16px;line-height:1.5;color:#1A1A1A;overflow-wrap:anywhere;word-break:break-word">${body}</div>
+      </td>
+    </tr>`;
+}
+
+function consentBlock(accepted: boolean): string {
+  const answer = yesNo(accepted);
+  const background = accepted ? "#E8F8F7" : "#F7F9FA";
+  const border = accepted ? "#1ABBB3" : "#E5E9EC";
+  const color = accepted ? "#0F766E" : "#1A1A1A";
+  return `
+    <tr>
+      <td style="padding:4px 0 16px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate">
+          <tr>
+            <td style="padding:14px 16px;background:${background};border:1px solid ${border};border-radius:12px;font-family:Arial,Helvetica,sans-serif">
+              <div style="margin:0;font-size:12px;line-height:1.4;color:#6B7280">Consentimiento promocional</div>
+              <div style="margin:4px 0 0;font-size:16px;line-height:1.4;font-weight:700;color:${color}">${answer}</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>`;
+}
+
 export function buildInternalNoticeEmail(payload: ContactLeadPayload): {
   subject: string;
   html: string;
   text: string;
 } {
-  const origin = originLabel(payload);
+  const origin = classifyLead(payload);
+  const commercial = payload.formulario === "comercial";
   const infoFarmacia = asText(payload.infoFarmacia);
-  const html = shell(`
+  const freeMessage = payload.mensajeEsAutomatico ? "" : asText(payload.mensaje);
+  const interest = interestDisplay(payload);
+  const when = madridDateTime(payload.submittedAt);
+
+  const provenance = [
+    ["Origen", asText(payload.origen)],
+    ["Medio", asText(payload.medio)],
+    ["Campaña", asText(payload.campana)],
+    ["Pieza", asText(payload.pieza)],
+  ] as const;
+
+  const commercialRows = [
+    commercialField("Nombre", asText(payload.nombre)),
+    commercialField("Farmacia", asText(payload.farmacia)),
+    commercialField("Email", asText(payload.email)),
+    commercialField("Teléfono", asText(payload.telefono)),
+    commercialField("Interés principal", interest),
+    commercialField("Mensaje", freeMessage, { preserveBreaks: true }),
+    ...provenance.map(([label, value]) => commercialField(label, value)),
+    consentBlock(payload.consentimientoPromocional),
+    commercialField("Fecha", when),
+  ].join("");
+
+  const contactRows = [
+    row("Nombre", asText(payload.nombre)),
+    row("Farmacia", asText(payload.farmacia)),
+    row("Email", asText(payload.email)),
+    row("Teléfono", asText(payload.telefono)),
+    row("Tipo de contacto", tipoLabel(payload.tipoUsuario)),
+    row("Mensaje", asText(payload.mensaje)),
+    infoFarmacia ? row("Cuéntanos algo de tu farmacia", infoFarmacia) : "",
+    row("Origen", `${origin.label}${payload.source ? ` · ${payload.source}` : ""}`),
+    row("Fecha", when),
+  ].join("");
+
+  const highIntentLabel = "Alta intención · Implantación";
+  const html = commercial
+    ? shell(`
+    ${brandHeader()}
+    <tr>
+      <td style="padding:0 24px 8px">
+        ${
+          origin.highIntent
+            ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;margin:0 0 16px">
+                <tr>
+                  <td style="padding:14px 16px;background:#E8F8F7;border:1px solid #1ABBB3;border-radius:12px;font-family:Arial,Helvetica,sans-serif">
+                    <div style="margin:0;font-size:16px;line-height:1.4;font-weight:700;color:#0F766E">${highIntentLabel}</div>
+                    <div style="margin:6px 0 0;font-size:14px;line-height:1.5;color:#374151">Esta farmacia quiere implantar FarmaFácil. Conviene responder con prioridad.</div>
+                  </td>
+                </tr>
+              </table>`
+            : `<div style="margin:0 0 12px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.4;font-weight:700;color:#0F766E">${escapeHtml(origin.label)}</div>`
+        }
+        <h1 style="font-family:Arial,Helvetica,sans-serif;font-size:22px;line-height:1.35;color:#0B0B0B;margin:0 0 6px">Nueva solicitud comercial</h1>
+        <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5;color:#4B5563;margin:0 0 20px">Datos enviados desde la web.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:0 24px 12px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse">
+          ${commercialRows}
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:0 24px 28px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;color:#9CA3AF">
+        Aviso interno FarmaFácil · ${escapeHtml(FARMAFACIL_CONTACT_EMAIL)}<br />
+        El consentimiento promocional solo es Sí si la persona marcó esa casilla. La solicitud no lo implica.
+      </td>
+    </tr>
+  `)
+    : shell(`
     ${brandHeader()}
     <tr>
       <td style="padding:0 28px 8px">
@@ -153,15 +234,7 @@ export function buildInternalNoticeEmail(payload: ContactLeadPayload): {
     <tr>
       <td style="padding:0 28px 24px">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse">
-          ${row("Nombre", asText(payload.nombre))}
-          ${row("Farmacia", asText(payload.farmacia))}
-          ${row("Email", asText(payload.email))}
-          ${row("Teléfono", asText(payload.telefono))}
-          ${row("Tipo de contacto", tipoLabel(payload.tipoUsuario))}
-          ${row("Mensaje", asText(payload.mensaje))}
-          ${infoFarmacia ? row("Cuéntanos algo de tu farmacia", infoFarmacia) : ""}
-          ${row("Origen", `${origin.label}${payload.source ? ` · ${payload.source}` : ""}`)}
-          ${row("Fecha", madridDateTime(payload.submittedAt))}
+          ${contactRows}
         </table>
       </td>
     </tr>
@@ -172,23 +245,42 @@ export function buildInternalNoticeEmail(payload: ContactLeadPayload): {
     </tr>
   `);
 
-  const text = [
-    origin.subjectInternal,
-    "",
-    `Nombre: ${asText(payload.nombre)}`,
-    `Farmacia: ${asText(payload.farmacia)}`,
-    `Email: ${asText(payload.email)}`,
-    `Teléfono: ${asText(payload.telefono)}`,
-    `Tipo: ${tipoLabel(payload.tipoUsuario)}`,
-    `Mensaje: ${asText(payload.mensaje)}`,
-    infoFarmacia ? `Cuéntanos algo de tu farmacia: ${infoFarmacia}` : "",
-    `Origen: ${origin.label}`,
-    `Fecha: ${madridDateTime(payload.submittedAt)}`,
-  ]
-    .filter(Boolean)
-    .join("\n");
+  const textLines = commercial
+    ? [
+        origin.subjectInternal,
+        ...(origin.highIntent ? [highIntentLabel] : [origin.label]),
+        "",
+        `Nombre: ${asText(payload.nombre)}`,
+        ...[
+          ["Farmacia", asText(payload.farmacia)],
+          ["Email", asText(payload.email)],
+          ["Teléfono", asText(payload.telefono)],
+          ["Interés principal", interest],
+          ["Mensaje", freeMessage],
+          ...provenance,
+        ].flatMap(([label, value]) => (value.trim() ? [`${label}: ${value.trim()}`] : [])),
+        `Consentimiento promocional: ${yesNo(payload.consentimientoPromocional)}`,
+        `Fecha: ${when}`,
+      ]
+    : [
+        origin.subjectInternal,
+        "",
+        `Nombre: ${asText(payload.nombre)}`,
+        `Farmacia: ${shown(asText(payload.farmacia))}`,
+        `Email: ${asText(payload.email)}`,
+        `Teléfono: ${shown(asText(payload.telefono))}`,
+        `Tipo: ${tipoLabel(payload.tipoUsuario)}`,
+        `Mensaje: ${asText(payload.mensaje)}`,
+        ...(infoFarmacia ? [`Cuéntanos algo de tu farmacia: ${infoFarmacia}`] : []),
+        `Origen: ${origin.label}`,
+        `Fecha: ${madridDateTime(payload.submittedAt)}`,
+      ];
 
-  return { subject: origin.subjectInternal, html, text };
+  return {
+    subject: origin.subjectInternal,
+    html,
+    text: textLines.join("\n"),
+  };
 }
 
 export function buildConfirmationEmail(payload: ContactLeadPayload): {

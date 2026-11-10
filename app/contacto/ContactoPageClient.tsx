@@ -16,6 +16,7 @@ import {
   FARMAFACIL_PHONE_DISPLAY,
   FARMAFACIL_WHATSAPP_URL,
 } from "@/lib/constants";
+import { buildGeneralContactPayload } from "@/lib/contacto/payload";
 
 const fieldClassName =
   "h-12 rounded-xl border-[#C5CCD3]/80 bg-[#F7F9FA] px-4 text-[#1A1A1A] shadow-none transition-colors placeholder:text-gray-400 hover:border-[#1ABBB3]/40 focus-visible:bg-white focus-visible:ring-[#1ABBB3]/30 focus-visible:ring-offset-0";
@@ -55,16 +56,15 @@ export default function ContactoPageClient({
     setLoading(true);
     try {
       const payload = {
-        nombre: formData.nombre,
-        farmacia: formData.farmacia || "",
-        email: formData.email,
-        telefono: formData.telefono || "",
-        tipoUsuario: formData.tipoUsuario || "",
-        mensaje: formData.mensaje,
-        infoFarmacia:
-          formData.tipoUsuario === "farmacia" ? formData.infoFarmacia.trim() : "",
-        interes: "contacto_general",
-        source: "contacto" as const,
+        ...buildGeneralContactPayload({
+          nombre: formData.nombre,
+          farmacia: formData.farmacia,
+          email: formData.email,
+          telefono: formData.telefono,
+          tipoUsuario: formData.tipoUsuario,
+          mensaje: formData.mensaje,
+          infoFarmacia: formData.infoFarmacia,
+        }),
         submittedAt: new Date().toISOString(),
       };
 
@@ -96,11 +96,14 @@ export default function ContactoPageClient({
         aceptarRGPD: false,
       });
     } catch (error: unknown) {
-      console.error("Error al enviar:", error);
+      console.error("Contacto: envío no completado");
 
       toast({
-        title: "Error al enviar",
-        description: "Intenta de nuevo más tarde.",
+        title: "No se pudo enviar",
+        description:
+          error instanceof Error && error.message
+            ? error.message
+            : "No hemos podido registrar tu mensaje. Puedes intentarlo de nuevo en unos minutos.",
         variant: "destructive",
       });
     } finally {
@@ -293,8 +296,8 @@ export default function ContactoPageClient({
                   </div>
                   <p className="mt-3 text-xs leading-relaxed text-gray-500">
                     Tus datos serán tratados por <span className="font-semibold text-gray-700">FarmaFácil</span>{" "}
-                    con la finalidad de gestionar tu solicitud e informarte sobre productos o futuros
-                    programas de aceleración. Puedes ejercer tus derechos escribiendo a{" "}
+                    para gestionar este mensaje y responderte. Esta aceptación no autoriza el envío de
+                    comunicaciones promocionales. Puedes ejercer tus derechos escribiendo a{" "}
                     <a
                       href="mailto:privacidad@farmafacil.solutions"
                       className="text-[#1ABBB3] hover:underline"

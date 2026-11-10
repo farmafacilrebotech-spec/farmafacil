@@ -1,42 +1,6 @@
-import dynamic from "next/dynamic";
+import CommercialLeadSection from "./CommercialLeadSection";
 
-/** Formulario interactivo (estado + toast); se carga en chunk aparte */
-const ContactForm = dynamic(() => import("./ContactForm"), {
-  ssr: true,
-});
-
+/** Formulario comercial de la home. Conserva el ancla histórica `#solicitar-demo`. */
 export default function DemoFormSection() {
-  return (
-    <section
-      id="solicitar-demo"
-      className="scroll-mt-20 border-t border-gray-100 bg-[#F7F9FA] py-16 sm:py-20"
-    >
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight text-[#1A1A1A] sm:text-3xl">
-              Solicita una prueba en tu farmacia
-            </h2>
-            <p className="mt-4 text-lg text-gray-600">
-              Cuéntanos quién eres y en qué farmacia trabajas. Te llamamos o escribimos para
-              valorar una prueba piloto adaptada a tu día a día.
-            </p>
-            <ul className="mt-8 space-y-3 text-sm text-gray-600">
-              <li className="flex gap-2">
-                <span className="font-bold text-[#1ABBB3]">·</span>
-                Sin tarjeta ni permanencia en la primera toma de contacto.
-              </li>
-              <li className="flex gap-2">
-                <span className="font-bold text-[#1ABBB3]">·</span>
-                Enfoque en tu mostrador real, no en slides interminables.
-              </li>
-            </ul>
-          </div>
-          <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg sm:p-8">
-            <ContactForm source="landing" />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+  return <CommercialLeadSection id="solicitar-demo" heading="h2" source="landing" />;
 }

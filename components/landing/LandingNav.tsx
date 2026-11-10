@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Menu, X, Pill } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { FARMAFACIL_CONTACTO_HREF, FARMAFACIL_PRUEBA_HREF } from "@/lib/constants";
+import { FARMAFACIL_CONTACTO_HREF, farmafacilSolicitudHref } from "@/lib/constants";
 
 const navItems = [
   { href: "#problema", label: "Retos" },
@@ -90,7 +90,7 @@ export default function LandingNav({ className }: { className?: string }) {
             asChild
             className="hidden rounded-full bg-[#1ABBB3] px-5 text-white shadow-sm hover:bg-[#159a94] sm:inline-flex"
           >
-            <a href={FARMAFACIL_PRUEBA_HREF}>Solicitar una prueba</a>
+            <a href={farmafacilSolicitudHref("nav")}>Solicitar una prueba</a>
           </Button>
           <button
             type="button"
@@ -147,7 +147,7 @@ export default function LandingNav({ className }: { className?: string }) {
               </a>
             </Button>
             <Button asChild className="mt-2 w-full rounded-full bg-[#1ABBB3] text-white">
-              <a href={FARMAFACIL_PRUEBA_HREF} onClick={() => setOpen(false)}>
+              <a href={farmafacilSolicitudHref("nav-movil")} onClick={() => setOpen(false)}>
                 Solicitar una prueba
               </a>
             </Button>

@@ -16,7 +16,7 @@ const MockupShowcase = dynamic(() => import("@/components/landing/MockupShowcase
   ssr: true,
 });
 
-/** Formulario de demo (incluye ContactForm cliente) */
+/** Formulario comercial de captación */
 const DemoFormSection = dynamic(() => import("@/components/landing/DemoFormSection"), {
   ssr: true,
 });

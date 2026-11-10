@@ -13,7 +13,7 @@ export default function PrivacidadPage() {
           </h1>
           
           <p className="text-sm text-gray-500 mb-8">
-            Última actualización: 15 de agosto de 2026
+            Última actualización: 10 de noviembre de 2026
           </p>
           
           <div className="prose max-w-none text-gray-700 space-y-6">
@@ -69,7 +69,11 @@ export default function PrivacidadPage() {
                 <li>Proporcionar y mantener nuestros servicios</li>
                 <li>Procesar pedidos y transacciones</li>
                 <li>Mejorar y personalizar su experiencia</li>
-                <li>Comunicarnos con usted sobre actualizaciones y novedades</li>
+                <li>Atender las solicitudes que nos envíe y prestar los servicios que haya pedido</li>
+                <li>
+                  Enviar comunicaciones promocionales solo cuando exista un consentimiento
+                  separado, libre y revocable (véase el apartado 12)
+                </li>
                 <li>Proporcionar soporte técnico</li>
                 <li>Analizar el uso de la plataforma y mejorar nuestros servicios</li>
                 <li>Prevenir fraudes y garantizar la seguridad</li>
@@ -208,6 +212,44 @@ export default function PrivacidadPage() {
                   </a>
                 </li>
               </ul>
+            </section>
+
+            <section id="solicitudes-comerciales">
+              <h2 className="text-2xl font-semibold text-[#1A1A1A] mt-6 mb-4">
+                12. Solicitudes comerciales de farmacias
+              </h2>
+              <p className="mb-4 leading-relaxed">
+                Cuando una farmacia envía el formulario de solicitud, FarmaFácil trata el nombre,
+                la farmacia, el email, el teléfono, el interés principal, el mensaje y la
+                procedencia técnica del enlace (origen, medio, campaña o pieza).
+                Esos últimos datos son códigos del botón o del QR, no datos personales.
+              </p>
+              <p className="mb-4 leading-relaxed">
+                La finalidad es atender la solicitud y, si procede, preparar una conversación
+                comercial, una demostración o una prueba. La base es la aplicación de medidas
+                precontractuales a petición de la persona interesada. Enviar el formulario no
+                supone aceptar comunicaciones promocionales.
+              </p>
+              <p className="mb-4 leading-relaxed">
+                Las comunicaciones sobre planes, novedades y promociones solo se envían si se marca
+                la casilla opcional, que no está preseleccionada. La base de esas comunicaciones es
+                el consentimiento, que puede retirarse en cualquier momento escribiendo a{" "}
+                <a href="mailto:privacidad@farmafacil.solutions" className="text-[#1ABBB3] hover:underline">
+                  privacidad@farmafacil.solutions
+                </a>
+                , sin que ello afecte a la atención de la solicitud ya enviada.
+              </p>
+              <p className="mb-4 leading-relaxed">
+                No incluimos el nombre, el email, el teléfono ni el mensaje en la dirección web.
+                La herramienta de analítica, cuando está activa, recibe la ruta de la página sin
+                los parámetros de la dirección. El registro operativo de la solicitud y el envío
+                del correo usan encargados (hoja de cálculo de Google y Resend). No vendemos estos
+                datos.
+              </p>
+              <p className="mb-4 leading-relaxed">
+                Conservamos la solicitud el tiempo necesario para gestionarla y, en su caso, durante
+                la relación comercial que pueda iniciarse y los plazos que exija la normativa.
+              </p>
             </section>
           </div>
         </div>

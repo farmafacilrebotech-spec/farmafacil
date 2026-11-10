@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Smartphone, Monitor, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FARMAFACIL_PRUEBA_HREF } from "@/lib/constants";
+import { farmafacilSolicitudHref } from "@/lib/constants";
 
 function MobileClientMock() {
   return (
@@ -98,7 +98,7 @@ export default function MockupShowcase() {
             size="lg"
             className="mt-6 h-12 rounded-full bg-[#1ABBB3] px-8 text-base font-semibold text-white hover:bg-[#159a94]"
           >
-            <a href={FARMAFACIL_PRUEBA_HREF}>Solicitar una prueba</a>
+            <a href={farmafacilSolicitudHref("demo-visual")}>Solicitar una prueba</a>
           </Button>
         </div>
       </div>

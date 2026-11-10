@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { FARMAFACIL_PRUEBA_HREF } from "@/lib/constants";
+import { farmafacilSolicitudHref } from "@/lib/constants";
 
 export default function CTASection() {
   return (
@@ -17,7 +17,7 @@ export default function CTASection() {
           size="lg"
           className="mt-8 h-12 rounded-full bg-white px-10 text-base font-bold text-[#1ABBB3] shadow-lg hover:bg-[#F7F9FA]"
         >
-          <a href={FARMAFACIL_PRUEBA_HREF}>Solicitar una prueba</a>
+          <a href={farmafacilSolicitudHref("cierre")}>Solicitar una prueba</a>
         </Button>
       </div>
     </section>

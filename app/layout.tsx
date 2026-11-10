@@ -85,6 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               gtag('js', new Date());
               gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
                 page_path: window.location.pathname,
+                page_location: window.location.origin + window.location.pathname
               });
             `,
           }}

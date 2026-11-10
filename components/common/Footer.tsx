@@ -5,7 +5,7 @@ import {
   FARMAFACIL_CONTACT_EMAIL,
   FARMAFACIL_CONTACTO_HREF,
   FARMAFACIL_PHONE_DISPLAY,
-  FARMAFACIL_PRUEBA_HREF,
+  farmafacilSolicitudHref,
   FARMAFACIL_TARJETA_PAGE_HREF,
   FARMAFACIL_WHATSAPP_URL,
 } from "@/lib/constants";
@@ -71,7 +71,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href={FARMAFACIL_PRUEBA_HREF}
+                  href={farmafacilSolicitudHref("footer")}
                   className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
                 >
                   Solicitar una prueba
@@ -105,14 +105,6 @@ export default function Footer() {
                   className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
                 >
                   Términos de Uso
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terminos"
-                  className="text-gray-400 hover:text-[#4ED3C2] transition-colors text-sm"
-                >
-                  Aviso Legal
                 </Link>
               </li>
             </ul>

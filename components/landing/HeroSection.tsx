@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
-import { FARMAFACIL_CONTACTO_HREF, FARMAFACIL_PRUEBA_HREF } from "@/lib/constants";
+import { FARMAFACIL_CONTACTO_HREF, farmafacilSolicitudHref } from "@/lib/constants";
 
 export default function HeroSection() {
   return (
@@ -27,7 +27,7 @@ export default function HeroSection() {
                 size="lg"
                 className="h-12 rounded-full bg-[#1ABBB3] px-8 text-base font-semibold text-white hover:bg-[#159a94]"
               >
-                <a href={FARMAFACIL_PRUEBA_HREF}>Solicitar una prueba</a>
+                <a href={farmafacilSolicitudHref("hero")}>Solicitar una prueba</a>
               </Button>
               <Button
                 asChild
