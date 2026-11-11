@@ -358,7 +358,7 @@ export default function SolucionesContent() {
           </p>
           <figure className="mx-auto mt-8 max-w-md sm:mt-10 sm:max-w-lg">
             <Image
-              src="/images/ilustraciones/catalogo-pedidos-qr.png"
+              src="/images/ilustraciones/catalogo-pedidos-qr.svg"
               alt="Ilustración conceptual: catálogo digital, acceso por QR y pedidos en FarmaFácil."
               width={1264}
               height={1264}
